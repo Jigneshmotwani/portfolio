@@ -1,0 +1,29 @@
+.os {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: #000;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.os__loading {
+  position: absolute;
+  inset: 0;
+  background: #000;
+}
+
+.os__brightness {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  pointer-events: none;
+  z-index: 2147483000;
+}
+
+.os__harness {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  overflow: hidden;
+}

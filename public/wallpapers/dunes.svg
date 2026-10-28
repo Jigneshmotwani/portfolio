@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+<defs>
+<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#3E6FD8"/><stop offset=".38" stop-color="#8E9BEA"/>
+<stop offset=".62" stop-color="#F0ABA6"/><stop offset=".8" stop-color="#FBCDB0"/></linearGradient>
+<radialGradient id="sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF4E0"/>
+<stop offset=".35" stop-color="#FFE3BD" stop-opacity=".95"/><stop offset="1" stop-color="#FFD3A8" stop-opacity="0"/></radialGradient>
+<linearGradient id="h1" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#A986C9"/><stop offset="1" stop-color="#D8A0BF"/></linearGradient>
+<linearGradient id="h2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E58C93"/><stop offset="1" stop-color="#F4A88E"/></linearGradient>
+<linearGradient id="h3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EE8A5F"/><stop offset="1" stop-color="#F8B074"/></linearGradient>
+<linearGradient id="h4" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#C4564E"/><stop offset="1" stop-color="#E07A5A"/></linearGradient>
+<linearGradient id="h5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9C3B47"/><stop offset="1" stop-color="#6E2740"/></linearGradient>
+</defs>
+<rect width="1600" height="1000" fill="url(#sky)"/>
+<circle cx="820" cy="560" r="260" fill="url(#sun)"/>
+<circle cx="820" cy="560" r="62" fill="#FFF6E6"/>
+<path d="M0 600C210 548 380 530 560 566C760 606 900 552 1080 534C1260 516 1430 556 1600 596V1000H0Z" fill="url(#h1)"/>
+<path d="M0 684C180 646 340 636 520 676C700 716 860 698 1020 656C1200 610 1400 636 1600 686V1000H0Z" fill="url(#h2)"/>
+<path d="M0 684C180 646 340 636 520 676C700 716 860 698 1020 656C1200 610 1400 636 1600 686" fill="none" stroke="#fff" stroke-opacity=".22" stroke-width="2"/>
+<path d="M0 776C240 726 420 756 640 798C860 840 1060 788 1240 758C1400 732 1520 752 1600 766V1000H0Z" fill="url(#h3)"/>
+<path d="M0 776C240 726 420 756 640 798C860 840 1060 788 1240 758C1400 732 1520 752 1600 766" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/>
+<path d="M0 860C230 822 470 850 720 884C980 918 1240 872 1600 840V1000H0Z" fill="url(#h4)"/>
+<path d="M0 930C300 900 560 936 840 948C1120 960 1360 920 1600 912V1000H0Z" fill="url(#h5)"/>
+</svg>

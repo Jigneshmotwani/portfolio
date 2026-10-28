@@ -1,0 +1,26 @@
+.wallpaper {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.wallpaper__img {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: background-image 0.4s;
+}
+
+.wallpaper--blur .wallpaper__img {
+  inset: -40px;
+  filter: blur(28px) saturate(140%);
+}
+
+.wallpaper__dim {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  transition: opacity 0.4s;
+}

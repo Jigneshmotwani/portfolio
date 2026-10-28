@@ -1,0 +1,19 @@
+.app-frame__loading,
+.app-frame__error {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--bg);
+  color: var(--fg-secondary);
+  padding: 24px;
+  text-align: center;
+}
+
+.app-frame__error strong {
+  color: var(--fg);
+  font-size: 14px;
+}

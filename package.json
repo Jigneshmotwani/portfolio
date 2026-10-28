@@ -1,0 +1,32 @@
+{
+  "name": "jignesh-os-portfolio",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Jignesh Motwani's portfolio as an interactive macOS / iOS simulation",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -b",
+    "test": "vitest run",
+    "resume:pdf": "node scripts/generate-resume-pdf.mjs",
+    "cache:github": "node scripts/cache-github.mjs"
+  },
+  "dependencies": {
+    "chess.js": "^1.4.0",
+    "lucide-react": "^1.63.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "zustand": "^5.0.16"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "typescript": "~7.0.2",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
+  }
+}
