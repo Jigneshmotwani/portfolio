@@ -1,0 +1,377 @@
+/*
+ * One-page resume. Self-contained (no OS theme tokens): always black on
+ * white so it reads the same on screen, in print and in the PDF.
+ * Wide screens and print use a fixed A4 sheet; narrow screens reflow.
+ */
+.resume-doc {
+  --r-ink: #16181d;
+  --r-muted: #555b66;
+  --r-faint: #8a909b;
+  --r-rule: #d9dce2;
+  --r-accent: #1d4ed8;
+  --r-font: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+
+  box-sizing: border-box;
+  width: 210mm;
+  min-height: 297mm;
+  padding: 12mm 14mm 10mm;
+  background: #fff;
+  color: var(--r-ink);
+  font-family: var(--r-font);
+  font-size: 8.4pt;
+  line-height: 1.34;
+  font-feature-settings: 'kern', 'liga';
+  -webkit-font-smoothing: antialiased;
+  text-align: left;
+  user-select: text;
+  -webkit-user-select: text;
+  display: flex;
+  flex-direction: column;
+  gap: 3.2mm;
+}
+
+.resume-doc *,
+.resume-doc *::before,
+.resume-doc *::after {
+  box-sizing: border-box;
+}
+
+.resume-doc a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.resume-doc a:hover {
+  color: var(--r-accent);
+  text-decoration: underline;
+}
+
+.resume-doc h1,
+.resume-doc h2,
+.resume-doc h3,
+.resume-doc p,
+.resume-doc ul,
+.resume-doc ol,
+.resume-doc dl,
+.resume-doc dd {
+  margin: 0;
+  padding: 0;
+}
+
+.resume-doc ul,
+.resume-doc ol {
+  list-style: none;
+}
+
+/* Header */
+.resume-doc__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 8mm;
+  padding-bottom: 3mm;
+  border-bottom: 1.6pt solid var(--r-ink);
+}
+
+.resume-doc__name {
+  font-size: 22pt;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.resume-doc__headline {
+  margin-top: 1.4mm !important;
+  font-size: 10pt;
+  font-weight: 500;
+  color: var(--r-muted);
+}
+
+.resume-doc__dot {
+  margin: 0 0.5em;
+  color: var(--r-faint);
+}
+
+.resume-doc__contact {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.4mm;
+  font-size: 8.2pt;
+  color: var(--r-muted);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.resume-doc__summary {
+  font-size: 9pt;
+  color: var(--r-ink);
+  max-width: 165mm;
+}
+
+/* Sections */
+.resume-doc__section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6mm;
+}
+
+.resume-doc__section h2 {
+  font-size: 7.6pt;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--r-accent);
+  padding-bottom: 0.9mm;
+  border-bottom: 0.6pt solid var(--r-rule);
+}
+
+.resume-doc__list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.7mm;
+}
+
+.resume-doc__entry {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6mm;
+  break-inside: avoid;
+}
+
+.resume-doc__entry--tight {
+  gap: 0.2mm;
+}
+
+.resume-doc__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 4mm;
+}
+
+.resume-doc__row h3 {
+  font-size: 9pt;
+  font-weight: 650;
+  line-height: 1.3;
+}
+
+.resume-doc__org {
+  font-weight: 400;
+  color: var(--r-muted);
+}
+
+.resume-doc__org::before {
+  content: '·';
+  margin: 0 0.45em;
+  color: var(--r-faint);
+}
+
+.resume-doc__date {
+  flex: none;
+  font-size: 8pt;
+  color: var(--r-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.resume-doc__bullets {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3mm;
+}
+
+.resume-doc__bullets li {
+  position: relative;
+  padding-left: 3.4mm;
+}
+
+.resume-doc__bullets li::before {
+  content: '';
+  position: absolute;
+  left: 0.6mm;
+  top: 0.5em;
+  width: 1.1mm;
+  height: 1.1mm;
+  border-radius: 50%;
+  background: var(--r-faint);
+}
+
+.resume-doc__projects {
+  gap: 0.8mm;
+}
+
+.resume-doc__skills {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5mm;
+}
+
+.resume-doc__skill {
+  display: grid;
+  grid-template-columns: 31mm 1fr;
+  gap: 3mm;
+}
+
+.resume-doc__skill dt {
+  font-weight: 600;
+}
+
+.resume-doc__columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7mm;
+}
+
+.resume-doc__columns p {
+  color: var(--r-muted);
+}
+
+.resume-doc__creds {
+  gap: 0.9mm;
+}
+
+.resume-doc__creds .resume-doc__row {
+  align-items: baseline;
+}
+
+.resume-doc__issuer {
+  color: var(--r-muted);
+}
+
+.resume-doc__footer {
+  margin-top: auto;
+  padding-top: 2mm;
+  border-top: 0.6pt solid var(--r-rule);
+  font-size: 7.6pt;
+  color: var(--r-faint);
+}
+
+.resume-doc__footer a {
+  color: var(--r-muted);
+}
+
+/* Narrow screens: reflow instead of shrinking a fixed A4 sheet. */
+@media screen and (max-width: 860px) {
+  .resume-doc {
+    width: 100%;
+    min-height: 0;
+    padding: 22px 18px 20px;
+    font-size: 13px;
+    gap: 16px;
+  }
+
+  .resume-doc__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding-bottom: 12px;
+  }
+
+  .resume-doc__name {
+    font-size: 27px;
+  }
+
+  .resume-doc__headline {
+    font-size: 14px;
+  }
+
+  .resume-doc__contact {
+    align-items: flex-start;
+    text-align: left;
+    font-size: 13px;
+    gap: 2px;
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  .resume-doc__summary {
+    font-size: 14px;
+  }
+
+  .resume-doc__section {
+    gap: 8px;
+  }
+
+  .resume-doc__section h2 {
+    font-size: 11px;
+    padding-bottom: 4px;
+  }
+
+  .resume-doc__list {
+    gap: 12px;
+  }
+
+  .resume-doc__row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1px;
+  }
+
+  .resume-doc__row h3 {
+    font-size: 14px;
+  }
+
+  .resume-doc__org {
+    display: block;
+    font-size: 13px;
+  }
+
+  .resume-doc__org::before {
+    content: none;
+  }
+
+  .resume-doc__date {
+    font-size: 12px;
+  }
+
+  .resume-doc__bullets li {
+    padding-left: 14px;
+  }
+
+  .resume-doc__bullets li::before {
+    left: 3px;
+    width: 4px;
+    height: 4px;
+  }
+
+  .resume-doc__columns {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .resume-doc__projects .resume-doc__date {
+    word-break: break-word;
+    white-space: normal;
+  }
+
+  .resume-doc__skill {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .resume-doc__skills {
+    gap: 8px;
+  }
+
+  .resume-doc__footer {
+    font-size: 12px;
+    padding-top: 10px;
+  }
+}
+
+@media print {
+  .resume-doc {
+    width: 210mm;
+    height: 297mm;
+    min-height: 0;
+    overflow: hidden;
+    box-shadow: none !important;
+    margin: 0 !important;
+  }
+
+  .resume-doc a {
+    text-decoration: none !important;
+    color: inherit !important;
+  }
+}

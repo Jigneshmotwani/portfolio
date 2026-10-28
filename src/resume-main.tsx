@@ -1,3 +1,9 @@
-// STUB — replaced by the resume agent.
+import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-createRoot(document.getElementById('root')!).render(<p>Resume coming soon.</p>)
+import { ResumePage } from './components/resume/ResumePage'
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <ResumePage />
+  </StrictMode>,
+)
