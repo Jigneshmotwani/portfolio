@@ -1,0 +1,803 @@
+/*
+ * Widgets (macOS desktop + iOS home screen). Light tokens first, then the two
+ * dark blocks, mirroring src/styles/global.css.
+ */
+.widget {
+  --widget-material: rgb(255 255 255 / 0.62);
+  --widget-edge: rgb(255 255 255 / 0.45);
+  --widget-pad: 16px;
+  --widget-clock-face: #ffffff;
+  --widget-clock-ink: #1d1d1f;
+  --widget-clock-tick: rgb(0 0 0 / 0.32);
+  --widget-gh-0: rgb(0 0 0 / 0.08);
+  --widget-gh-1: #9be9a8;
+  --widget-gh-2: #40c463;
+  --widget-gh-3: #30a14e;
+  --widget-gh-4: #216e39;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 22px;
+  container-type: inline-size;
+  isolation: isolate;
+  color: var(--fg);
+  font-family: var(--font-sans);
+  text-align: left;
+  user-select: none;
+  -webkit-user-select: none;
+  box-shadow: inset 0 0 0 0.5px var(--widget-edge);
+  transition: transform 0.18s var(--ease-out);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-os-theme='light']) .widget {
+    --widget-material: rgb(30 30 32 / 0.58);
+    --widget-edge: rgb(255 255 255 / 0.1);
+    --widget-clock-face: #1c1c1e;
+    --widget-clock-ink: #f5f5f7;
+    --widget-clock-tick: rgb(255 255 255 / 0.4);
+    --widget-gh-0: rgb(255 255 255 / 0.09);
+    --widget-gh-1: #0e4429;
+    --widget-gh-2: #006d32;
+    --widget-gh-3: #26a641;
+    --widget-gh-4: #39d353;
+  }
+}
+
+:root[data-os-theme='dark'] .widget {
+  --widget-material: rgb(30 30 32 / 0.58);
+  --widget-edge: rgb(255 255 255 / 0.1);
+  --widget-clock-face: #1c1c1e;
+  --widget-clock-ink: #f5f5f7;
+  --widget-clock-tick: rgb(255 255 255 / 0.4);
+  --widget-gh-0: rgb(255 255 255 / 0.09);
+  --widget-gh-1: #0e4429;
+  --widget-gh-2: #006d32;
+  --widget-gh-3: #26a641;
+  --widget-gh-4: #39d353;
+}
+
+/* Sizes */
+.widget--mac {
+  box-shadow:
+    inset 0 0 0 0.5px var(--widget-edge),
+    0 0 0 0.5px rgb(0 0 0 / 0.1),
+    0 14px 34px -12px rgb(0 0 0 / 0.38);
+}
+
+.widget--mac.widget--small {
+  width: 170px;
+  height: 170px;
+  --widget-pad: 14px;
+}
+
+.widget--mac.widget--medium {
+  width: 360px;
+  height: 170px;
+}
+
+.widget--mac.widget--large {
+  width: 360px;
+  height: 380px;
+}
+
+.widget--ios {
+  width: 100%;
+  height: 100%;
+  box-shadow:
+    inset 0 0 0 0.5px var(--widget-edge),
+    0 8px 24px -10px rgb(0 0 0 / 0.35);
+}
+
+.widget--ios.widget--small {
+  aspect-ratio: 1;
+  --widget-pad: 13px;
+}
+
+.widget--ios.widget--medium {
+  aspect-ratio: 338 / 158;
+  --widget-pad: 14px;
+}
+
+.widget--ios.widget--large {
+  aspect-ratio: 338 / 354;
+}
+
+.widget--action {
+  cursor: pointer;
+}
+
+.widget--action:active {
+  transform: scale(0.97);
+}
+
+.widget:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--accent) 60%, transparent);
+  outline-offset: 2px;
+}
+
+.widget-material {
+  background-color: var(--widget-material);
+  -webkit-backdrop-filter: var(--material-blur);
+  backdrop-filter: var(--material-blur);
+}
+
+.widget-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.widget-wicon {
+  flex: none;
+  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.18));
+}
+
+/* ── Analog clock ───────────────────────────────────────────── */
+.widget-clock {
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 2px 6px rgb(0 0 0 / 0.22));
+}
+
+.widget-clock__face {
+  fill: var(--widget-clock-face);
+}
+
+.widget-clock__tick {
+  stroke: var(--widget-clock-tick);
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+
+.widget-clock__tick--major {
+  stroke: var(--widget-clock-ink);
+  stroke-width: 2.4;
+}
+
+.widget-clock__num {
+  fill: var(--widget-clock-ink);
+  font-family: var(--font-rounded);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.widget-clock__label {
+  fill: var(--widget-clock-tick);
+  font-family: var(--font-sans);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.widget-clock__hand {
+  stroke: var(--widget-clock-ink);
+  stroke-linecap: round;
+}
+
+.widget-clock__hub {
+  fill: var(--widget-clock-ink);
+}
+
+.widget-clock__second {
+  stroke: #ff9500;
+  stroke-width: 1.2;
+  stroke-linecap: round;
+}
+
+.widget-clock__second-hub {
+  fill: #ff9500;
+}
+
+.widget-clock__pin {
+  fill: var(--widget-clock-face);
+}
+
+/* ── Clock + weather ─────────────────────────────────────────── */
+.widget-sky {
+  color: #fff;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.12);
+  background: linear-gradient(180deg, var(--sky-top), var(--sky-bottom));
+}
+
+.widget-sky::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(120% 80% at 85% 0%, rgb(255 255 255 / 0.18), transparent 60%);
+  pointer-events: none;
+}
+
+.widget-sky--clear-day {
+  --sky-top: #2b7fe8;
+  --sky-bottom: #64b2f5;
+}
+
+.widget-sky--clear-night {
+  --sky-top: #0b1531;
+  --sky-bottom: #2a3b66;
+}
+
+.widget-sky--cloudy-day {
+  --sky-top: #55779f;
+  --sky-bottom: #95acc7;
+}
+
+.widget-sky--cloudy-night {
+  --sky-top: #1b2533;
+  --sky-bottom: #3d4b60;
+}
+
+.widget-sky--rain {
+  --sky-top: #34485f;
+  --sky-bottom: #697f99;
+}
+
+.widget-sky--storm {
+  --sky-top: #1f2335;
+  --sky-bottom: #474b66;
+}
+
+.widget-sky--fog {
+  --sky-top: #6f7d8d;
+  --sky-bottom: #a9b4c1;
+}
+
+:root[data-os-theme='dark'] .widget-sky {
+  box-shadow:
+    inset 0 0 0 100vmax rgb(0 0 0 / 0.16),
+    inset 0 0 0 0.5px var(--widget-edge);
+}
+
+.widget--mac.widget-sky {
+  box-shadow:
+    inset 0 0 0 0.5px rgb(255 255 255 / 0.2),
+    0 0 0 0.5px rgb(0 0 0 / 0.1),
+    0 14px 34px -12px rgb(0 0 0 / 0.38);
+}
+
+.widget-cw__small {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 6px;
+  padding: var(--widget-pad);
+}
+
+.widget-cw__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  min-width: 0;
+}
+
+.widget-cw__row--bottom {
+  align-items: baseline;
+}
+
+.widget-cw__small .widget-cw__clock {
+  min-height: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.widget-cw__small .widget-clock {
+  width: auto;
+  aspect-ratio: 1;
+}
+
+.widget-cw__time {
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.widget-cw__temp-sm {
+  font-size: 20px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.widget-cw__main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: var(--widget-pad);
+  gap: 12px;
+}
+
+.widget-cw__top {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.widget--large .widget-cw__top {
+  flex: 0 0 46%;
+}
+
+.widget-cw__top .widget-cw__clock {
+  height: 100%;
+  aspect-ratio: 1;
+  flex: none;
+}
+
+.widget-cw__weather {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.widget-cw__place {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.widget-cw__city {
+  font-size: 15px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.widget-cw__date {
+  font-size: 11.5px;
+  font-weight: 500;
+  opacity: 0.86;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-variant-numeric: tabular-nums;
+}
+
+.widget-cw__temp {
+  font-size: clamp(30px, 11cqi, 46px);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.widget-cw__cond {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12.5px;
+  font-weight: 600;
+  min-width: 0;
+}
+
+.widget-cw__cond span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.widget-cw__hl {
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 0.9;
+  font-variant-numeric: tabular-nums;
+}
+
+.widget-cw__hours {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-rows: minmax(0, 1fr) auto;
+  border-top: 0.5px solid rgb(255 255 255 / 0.3);
+  padding-top: 10px;
+  gap: 4px;
+}
+
+.widget-cw__hour {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+.widget-cw__hour-time {
+  font-size: 11.5px;
+  font-weight: 600;
+  opacity: 0.88;
+  white-space: nowrap;
+}
+
+.widget-cw__hour-temp {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.widget-cw__empty {
+  grid-column: 1 / -1;
+  align-self: center;
+  justify-self: center;
+  font-size: 12.5px;
+  opacity: 0.85;
+}
+
+.widget-cw__foot {
+  grid-column: 1 / -1;
+  font-size: 11px;
+  opacity: 0.75;
+  text-align: center;
+}
+
+/* ── GitHub contributions ───────────────────────────────────── */
+.widget-gh {
+  padding: var(--widget-pad);
+  gap: 8px;
+}
+
+.widget-gh__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.widget-gh__head img {
+  border-radius: 6px;
+  flex: none;
+}
+
+.widget-gh__title {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.widget-gh__name {
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.widget-gh__user {
+  font-size: 11.5px;
+  color: var(--fg-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.widget-gh__total {
+  font-size: 15px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.widget-gh__body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.widget-gh__grid {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.widget-gh__body--loading .widget-gh__grid {
+  animation: widget-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes widget-pulse {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.widget-gh__label {
+  fill: var(--fg-secondary);
+  font-family: var(--font-sans);
+  font-size: 8.5px;
+  font-weight: 500;
+}
+
+.widget-gh__cell--0 {
+  fill: var(--widget-gh-0);
+  background: var(--widget-gh-0);
+}
+
+.widget-gh__cell--1 {
+  fill: var(--widget-gh-1);
+  background: var(--widget-gh-1);
+}
+
+.widget-gh__cell--2 {
+  fill: var(--widget-gh-2);
+  background: var(--widget-gh-2);
+}
+
+.widget-gh__cell--3 {
+  fill: var(--widget-gh-3);
+  background: var(--widget-gh-3);
+}
+
+.widget-gh__cell--4 {
+  fill: var(--widget-gh-4);
+  background: var(--widget-gh-4);
+}
+
+.widget-gh__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center;
+  border-radius: 6px;
+}
+
+:root[data-os-theme='dark'] .widget-gh__img {
+  filter: invert(1) hue-rotate(180deg) brightness(0.9);
+}
+
+.widget-gh__caption {
+  font-size: 11px;
+  color: var(--fg-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.widget-gh__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px 10px;
+  padding-top: 8px;
+  border-top: 0.5px solid var(--separator);
+}
+
+.widget-gh__stats > div:not(.widget-gh__legend) {
+  display: flex;
+  flex-direction: column;
+}
+
+.widget-gh__stat {
+  font-size: 18px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.widget-gh__stat-label {
+  font-size: 10.5px;
+  color: var(--fg-secondary);
+}
+
+.widget-gh__legend {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 3px;
+  font-size: 10px;
+  color: var(--fg-secondary);
+}
+
+.widget-gh__legend span {
+  margin: 0 3px;
+}
+
+.widget-gh__swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2.5px;
+}
+
+/* ── Currently building ─────────────────────────────────────── */
+.widget-cb {
+  background-image: radial-gradient(130% 90% at 100% 0%, color-mix(in srgb, var(--accent) 24%, transparent), transparent 62%);
+}
+
+.widget-cb__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--accent);
+}
+
+.widget-cb__title {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.widget-cb__title--lg {
+  font-size: 24px;
+}
+
+.widget-cb__desc {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--fg-secondary);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.widget-cb__desc--2 {
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.widget-cb__desc--3 {
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+}
+
+.widget-cb__desc--6 {
+  -webkit-line-clamp: 6;
+  line-clamp: 6;
+  font-size: 13px;
+}
+
+.widget-cb__small {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: var(--widget-pad);
+}
+
+.widget-cb__small .widget-cb__desc {
+  font-size: 11.5px;
+}
+
+.widget-cb__foot {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.widget-cb__stack-inline {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--fg-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.widget-cb__medium {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: var(--widget-pad);
+}
+
+.widget-cb__info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.widget-cb__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 2px;
+  overflow: hidden;
+  max-height: 44px;
+}
+
+.widget-cb__chip {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--control);
+  color: var(--fg-secondary);
+  font-size: 10.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.widget-cb__large {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px;
+}
+
+.widget-cb__large-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.widget-cb__large-head > div {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.widget-cb__large-foot {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 0.5px solid var(--separator);
+  font-size: 12px;
+  color: var(--fg-secondary);
+}
+
+.widget-cb__open {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.widget-cb__ring {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+}
+
+.widget-cb__ring svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.widget-cb__ring-track {
+  fill: none;
+  stroke: var(--control-strong);
+  stroke-width: 3.4;
+}
+
+.widget-cb__ring-fill {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 3.4;
+  stroke-linecap: round;
+  transition: stroke-dasharray 0.6s var(--ease-out);
+}
+
+.widget-cb__pct {
+  position: relative;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg);
+}

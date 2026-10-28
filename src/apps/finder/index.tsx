@@ -1,11 +1,10 @@
-// STUB — replaced by the agent that owns this app.
 import { useApp } from '../types'
-import { apps } from '../registry'
-export default function App() {
-  const { appId } = useApp()
-  return (
-    <div style={{ position: 'absolute', inset: 0, display: 'grid', placeItems: 'center', background: 'var(--bg)', color: 'var(--fg-secondary)' }}>
-      {apps[appId].name} is coming soon.
-    </div>
-  )
+import { IOSFiles } from './IOSFiles'
+import { MacFinder } from './MacFinder'
+import './Finder.css'
+
+/** Finder on macOS, Files on iOS. Both browse the shared virtual file system (src/data/vfs.ts). */
+export default function Finder() {
+  const { platform } = useApp()
+  return platform === 'ios' ? <IOSFiles /> : <MacFinder />
 }

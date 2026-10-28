@@ -1,0 +1,357 @@
+/* ───────────── macOS Spotlight ───────────── */
+.spot-mac {
+  position: fixed;
+  inset: 0;
+  z-index: 56000;
+}
+
+.spot-mac__panel {
+  --spot-panel: rgb(238 238 240 / 0.72);
+  position: absolute;
+  top: 20vh;
+  left: 50%;
+  width: min(680px, calc(100vw - 48px));
+  transform: translateX(-50%);
+  border-radius: 14px;
+  background: var(--spot-panel);
+  -webkit-backdrop-filter: saturate(180%) blur(40px);
+  backdrop-filter: saturate(180%) blur(40px);
+  box-shadow: 0 0 0 0.5px rgb(0 0 0 / 0.18), inset 0 0 0 0.5px rgb(255 255 255 / 0.5), 0 20px 60px rgb(0 0 0 / 0.32);
+  color: var(--fg);
+  overflow: hidden;
+  animation: spot-pop 0.18s var(--ease-out);
+}
+
+:root[data-os-theme='dark'] .spot-mac__panel {
+  --spot-panel: rgb(40 40 42 / 0.7);
+  box-shadow: 0 0 0 0.5px rgb(0 0 0 / 0.7), inset 0 0 0 0.5px rgb(255 255 255 / 0.14), 0 20px 60px rgb(0 0 0 / 0.5);
+}
+
+@keyframes spot-pop {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.96);
+  }
+}
+
+.spot-mac__bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 54px;
+  padding: 0 16px;
+}
+
+.spot-mac__glass {
+  flex: none;
+  color: var(--fg-secondary);
+}
+
+.spot-mac__input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: -0.2px;
+  color: var(--fg);
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.spot-mac__input::placeholder {
+  color: var(--fg-tertiary);
+}
+
+.spot-mac__input:focus-visible {
+  outline: 0;
+}
+
+.spot-mac__results {
+  max-height: min(56vh, 500px);
+  padding: 4px 8px 8px;
+  border-top: 0.5px solid var(--separator);
+}
+
+.spot-group + .spot-group {
+  margin-top: 2px;
+}
+
+.spot-group__label {
+  padding: 8px 10px 3px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--fg-secondary);
+}
+
+.spot-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 34px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  cursor: default;
+}
+
+.spot-row--big {
+  min-height: 52px;
+  gap: 12px;
+}
+
+.spot-row[data-selected='true'] {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.spot-row__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+}
+
+.spot-row__text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.spot-row__text--inline {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.spot-row__title {
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.spot-row--big .spot-row__title {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.spot-row__sub {
+  font-size: 13px;
+  color: var(--fg-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.spot-row[data-selected='true'] .spot-row__sub {
+  color: color-mix(in srgb, var(--accent-contrast) 78%, transparent);
+}
+
+/* Shared icon renderers */
+.spot-icon-img {
+  object-fit: contain;
+}
+
+.spot-icon-cover {
+  display: grid;
+  place-items: center;
+  border-radius: 23%;
+  line-height: 1;
+  box-shadow: inset 0 0 0 0.5px rgb(255 255 255 / 0.25);
+}
+
+.spot-icon-emoji {
+  display: grid;
+  place-items: center;
+  line-height: 1;
+}
+
+/* ───────────── iOS Spotlight ───────────── */
+.spot-ios {
+  position: fixed;
+  inset: 0;
+  z-index: 56000;
+  display: flex;
+  flex-direction: column;
+  color: var(--fg);
+  background: color-mix(in srgb, var(--bg-grouped) 45%, transparent);
+  -webkit-backdrop-filter: blur(30px) saturate(160%);
+  backdrop-filter: blur(30px) saturate(160%);
+  animation: spot-ios-in 0.22s var(--ease-out);
+}
+
+.spot-ios--closing {
+  animation: spot-ios-out 0.16s ease-in forwards;
+}
+
+@keyframes spot-ios-in {
+  from {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+}
+
+@keyframes spot-ios-out {
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+.spot-ios__top {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: calc(max(env(safe-area-inset-top, 0px), 44px) + 10px) max(16px, env(safe-area-inset-right, 0px)) 8px
+    max(16px, env(safe-area-inset-left, 0px));
+}
+
+.spot-ios__field {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 10px;
+  border-radius: 11px;
+  background: var(--control-strong);
+  color: var(--fg-secondary);
+}
+
+.spot-ios__field input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-size: 17px;
+  color: var(--fg);
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.spot-ios__field input::placeholder {
+  color: var(--fg-secondary);
+}
+
+.spot-ios__cancel {
+  flex: none;
+  font-size: 17px;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.spot-ios__body {
+  flex: 1;
+  min-height: 0;
+  padding: 0 max(16px, env(safe-area-inset-right, 0px)) calc(24px + env(safe-area-inset-bottom, 0px))
+    max(16px, env(safe-area-inset-left, 0px));
+}
+
+.spot-ios__label {
+  margin: 18px 4px 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--fg-secondary);
+}
+
+.spot-ios__apps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  padding: 14px 6px;
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--bg-elevated) 72%, transparent);
+}
+
+.spot-ios__app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.spot-ios__app img {
+  border-radius: 23%;
+}
+
+.spot-ios__app:active img {
+  filter: brightness(0.8);
+}
+
+.spot-ios__section {
+  border-radius: 14px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--bg-elevated) 72%, transparent);
+}
+
+.spot-ios__cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 54px;
+  padding: 8px 14px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.spot-ios__cell--big {
+  min-height: 70px;
+}
+
+.spot-ios__cell + .spot-ios__cell::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 58px;
+  right: 0;
+  border-top: 0.5px solid var(--separator);
+}
+
+.spot-ios__cell:active {
+  background: var(--pressed);
+}
+
+.spot-ios__cell-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 46px;
+}
+
+.spot-ios__cell-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.spot-ios__cell-title {
+  font-size: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.spot-ios__cell--big .spot-ios__cell-title {
+  font-weight: 600;
+  white-space: normal;
+}
+
+.spot-ios__cell-sub {
+  font-size: 13px;
+  color: var(--fg-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

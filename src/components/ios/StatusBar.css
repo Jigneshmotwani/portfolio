@@ -1,0 +1,95 @@
+.ios-status {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 120;
+  height: var(--ios-status-h);
+  padding: 0 max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px));
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  font-family: var(--font-sans);
+  touch-action: none;
+  pointer-events: auto;
+  transition: color 0.3s;
+}
+
+.ios-status--light {
+  color: #fff;
+}
+
+.ios-status--adaptive {
+  color: var(--fg);
+}
+
+.ios-status__left,
+.ios-status__right {
+  height: 37px;
+  margin-top: 11px;
+  display: flex;
+  align-items: center;
+  width: calc(50% - 75px);
+  min-width: 0;
+}
+
+.ios-status__left {
+  gap: 6px;
+  justify-content: center;
+}
+
+.ios-status__right {
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  color: inherit;
+}
+
+.ios-status__right .ios-glyph {
+  flex: none;
+}
+
+.ios-status__time {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  padding: 0 2px;
+}
+
+.ios-status__carrier {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.ios-status__resume {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  height: 22px;
+  padding: 0 7px 0 6px;
+  border-radius: 11px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #fff;
+  background: var(--accent);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.18);
+  cursor: pointer;
+  white-space: nowrap;
+  flex: none;
+}
+
+.ios-status__resume:active {
+  filter: brightness(0.88);
+}
+
+.ios-status button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 8px;
+}

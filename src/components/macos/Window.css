@@ -1,0 +1,295 @@
+.win {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: auto;
+  transform-origin: 0 0;
+  will-change: transform;
+  transition:
+    transform 0.32s var(--ease-out),
+    width 0.32s var(--ease-out),
+    height 0.32s var(--ease-out),
+    opacity 0.3s ease,
+    visibility 0s linear 0s;
+}
+
+.win--interacting {
+  transition: none !important;
+}
+
+.win--minimized {
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    transform 0.42s cubic-bezier(0.55, 0, 0.8, 0.4),
+    opacity 0.42s cubic-bezier(0.7, 0, 1, 0.6),
+    visibility 0s linear 0.42s;
+}
+
+.win--closing {
+  pointer-events: none;
+}
+
+.win--mc {
+  transition:
+    transform 0.38s var(--ease-out),
+    width 0.38s var(--ease-out),
+    height 0.38s var(--ease-out),
+    opacity 0.3s ease;
+  cursor: pointer;
+}
+
+.win__frame {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--window-radius);
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--fg);
+  box-shadow: var(--window-shadow-inactive);
+  animation: win-open 0.24s var(--ease-out);
+  transition: box-shadow 0.2s;
+  contain: layout paint;
+}
+
+.win--active .win__frame {
+  box-shadow: var(--window-shadow);
+}
+
+.win--closing .win__frame {
+  animation: win-close 0.18s ease-in forwards;
+}
+
+.win--mc .win__frame {
+  box-shadow:
+    0 0 0 0.5px rgb(0 0 0 / 0.3),
+    0 20px 50px rgb(0 0 0 / 0.45);
+}
+
+@keyframes win-open {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+}
+
+@keyframes win-close {
+  to {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+}
+
+.win__titlebar {
+  flex: none;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 76px;
+  background: var(--titlebar-inactive);
+  border-bottom: 1px solid var(--separator);
+  color: var(--fg-tertiary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: default;
+}
+
+.win--active .win__titlebar {
+  background: var(--titlebar);
+  color: var(--fg);
+}
+
+.win__title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.win__content {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.win__mc-shield {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+}
+
+/* ---------------- traffic lights ---------------- */
+
+.tl {
+  position: absolute;
+  z-index: 40;
+  top: 8px;
+  left: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.tl--unified {
+  top: 20px;
+  left: 18px;
+}
+
+.tl__btn {
+  position: relative;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--control-strong);
+  box-shadow: inset 0 0 0 0.5px rgb(0 0 0 / 0.12);
+  color: rgb(0 0 0 / 0.55);
+  display: grid;
+  place-items: center;
+}
+
+.tl__btn svg {
+  width: 12px;
+  height: 12px;
+  opacity: 0;
+}
+
+.tl--active .tl__btn--close,
+.tl:hover .tl__btn--close {
+  background: #ff5f57;
+  box-shadow: inset 0 0 0 0.5px rgb(224 68 62 / 0.9);
+}
+
+.tl--active .tl__btn--min,
+.tl:hover .tl__btn--min {
+  background: #febc2e;
+  box-shadow: inset 0 0 0 0.5px rgb(222 161 35 / 0.9);
+}
+
+.tl--active .tl__btn--zoom,
+.tl:hover .tl__btn--zoom {
+  background: #28c840;
+  box-shadow: inset 0 0 0 0.5px rgb(26 171 41 / 0.9);
+}
+
+.tl__btn--zoom:disabled {
+  background: var(--control-strong) !important;
+  box-shadow: inset 0 0 0 0.5px rgb(0 0 0 / 0.12) !important;
+}
+
+.tl:hover .tl__btn:not(:disabled) svg {
+  opacity: 1;
+}
+
+.tl__btn:active:not(:disabled) {
+  filter: brightness(0.85);
+}
+
+/* ---------------- resize handles ---------------- */
+
+.win__rs {
+  position: absolute;
+  z-index: 60;
+}
+
+.win__rs--n,
+.win__rs--s {
+  left: 10px;
+  right: 10px;
+  height: 8px;
+  cursor: ns-resize;
+}
+
+.win__rs--n {
+  top: -4px;
+}
+
+.win__rs--s {
+  bottom: -4px;
+}
+
+.win__rs--e,
+.win__rs--w {
+  top: 10px;
+  bottom: 10px;
+  width: 8px;
+  cursor: ew-resize;
+}
+
+.win__rs--e {
+  right: -4px;
+}
+
+.win__rs--w {
+  left: -4px;
+}
+
+.win__rs--ne,
+.win__rs--nw,
+.win__rs--se,
+.win__rs--sw {
+  width: 16px;
+  height: 16px;
+}
+
+.win__rs--ne {
+  top: -5px;
+  right: -5px;
+  cursor: nesw-resize;
+}
+
+.win__rs--sw {
+  bottom: -5px;
+  left: -5px;
+  cursor: nesw-resize;
+}
+
+.win__rs--nw {
+  top: -5px;
+  left: -5px;
+  cursor: nwse-resize;
+}
+
+.win__rs--se {
+  bottom: -5px;
+  right: -5px;
+  cursor: nwse-resize;
+}
+
+/* While dragging / resizing: keep the cursor and stop iframes from eating pointer events. */
+body.mac-dragging,
+body.mac-dragging * {
+  cursor: default !important;
+}
+
+body[class*='mac-resizing'] iframe,
+body.mac-dragging iframe {
+  pointer-events: none !important;
+}
+
+body.mac-resizing-n *,
+body.mac-resizing-s * {
+  cursor: ns-resize !important;
+}
+
+body.mac-resizing-e *,
+body.mac-resizing-w * {
+  cursor: ew-resize !important;
+}
+
+body.mac-resizing-ne *,
+body.mac-resizing-sw * {
+  cursor: nesw-resize !important;
+}
+
+body.mac-resizing-nw *,
+body.mac-resizing-se * {
+  cursor: nwse-resize !important;
+}
+
+body[class*='mac-resizing'],
+body.mac-dragging {
+  user-select: none;
+  -webkit-user-select: none;
+}
