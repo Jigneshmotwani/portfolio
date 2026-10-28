@@ -18,6 +18,8 @@ const DAS = 170
 const ARR = 50
 const SOFT_MS = 40
 const BEST_KEY = 'jos.tetris.best'
+/** Ignore restart keys briefly after game over so a held hard-drop doesn't skip the result screen. */
+const RESTART_GUARD = 700
 
 type Action = 'left' | 'right' | 'down' | 'drop' | 'cw' | 'ccw' | 'hold' | 'pause'
 
@@ -110,6 +112,7 @@ export default function Tetris() {
   const stageRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const dirty = useRef(true)
+  const overAt = useRef(0)
   const input = useRef<{ h: { dir: -1 | 1; since: number; last: number } | null; down: boolean; downLast: number }>({
     h: null,
     down: false,
@@ -167,6 +170,7 @@ export default function Tetris() {
           playSound('tetris-level')
           break
         case 'over': {
+          overAt.current = performance.now()
           playSound('tetris-over')
           const score = game.score
           if (score > bestRef.current) {
@@ -236,6 +240,8 @@ export default function Tetris() {
     playSound('tetris-level')
   }, [game])
 
+  const canRestart = useCallback(() => performance.now() - overAt.current > RESTART_GUARD, [])
+
   const togglePause = useCallback(() => {
     if (game.status === 'playing') game.pause()
     else if (game.status === 'paused') game.resume()
@@ -247,7 +253,7 @@ export default function Tetris() {
   const press = useCallback(
     (a: Action) => {
       if (game.status === 'ready' || game.status === 'over') {
-        if (a === 'drop' || a === 'cw') start()
+        if (a === 'drop' && canRestart()) start()
         return
       }
       if (a === 'pause') {
@@ -283,7 +289,7 @@ export default function Tetris() {
           break
       }
     },
-    [game, start, togglePause],
+    [game, start, togglePause, canRestart],
   )
 
   const release = useCallback((a: Action) => {
@@ -302,7 +308,7 @@ export default function Tetris() {
       e.preventDefault()
       if (e.repeat) return
       if (a === 'enter') {
-        if (game.status === 'ready' || game.status === 'over') start()
+        if ((game.status === 'ready' || game.status === 'over') && canRestart()) start()
         else if (game.status === 'paused') togglePause()
         return
       }
@@ -322,7 +328,7 @@ export default function Tetris() {
       window.removeEventListener('keydown', onDown)
       window.removeEventListener('keyup', onUp)
     }
-  }, [active, game, press, release, start, togglePause])
+  }, [active, game, press, release, start, togglePause, canRestart])
 
   // Pause automatically when the window loses focus or the tab is hidden.
   useEffect(() => {
@@ -371,7 +377,7 @@ export default function Tetris() {
   const gesture = useRef<{ x: number; y: number; stepX: number; stepY: number; t: number; moved: boolean } | null>(null)
   const onPointerDown = (e: ReactPointerEvent<HTMLCanvasElement>) => {
     if (e.pointerType === 'mouse') {
-      if (game.status === 'ready' || game.status === 'over') start()
+      if ((game.status === 'ready' || game.status === 'over') && canRestart()) start()
       return
     }
     e.currentTarget.setPointerCapture(e.pointerId)
@@ -400,7 +406,7 @@ export default function Tetris() {
     gesture.current = null
     if (!g) return
     if (game.status === 'ready' || game.status === 'over') {
-      start()
+      if (canRestart()) start()
       return
     }
     if (game.status === 'paused') {

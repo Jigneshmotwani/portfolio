@@ -63,9 +63,9 @@ function drawGhostBlock(ctx: CanvasRenderingContext2D, px: number, py: number, s
   ctx.save()
   roundRect(ctx, px + inset, py + inset, s, s, r)
   ctx.fillStyle = c.base
-  ctx.globalAlpha = 0.14
+  ctx.globalAlpha = 0.08
   ctx.fill()
-  ctx.globalAlpha = 0.65
+  ctx.globalAlpha = 0.6
   ctx.strokeStyle = c.light
   ctx.lineWidth = Math.max(1, size * 0.06)
   ctx.stroke()
@@ -153,11 +153,11 @@ export function drawBoard(ctx: CanvasRenderingContext2D, game: TetrisGame, cell:
   }
 
   // soft vignette at the top so spawning pieces fade in
-  const top = ctx.createLinearGradient(0, 0, 0, cell * 1.2)
-  top.addColorStop(0, 'rgba(11,14,34,0.55)')
+  const top = ctx.createLinearGradient(0, 0, 0, cell * 0.7)
+  top.addColorStop(0, 'rgba(11,14,34,0.3)')
   top.addColorStop(1, 'rgba(11,14,34,0)')
   ctx.fillStyle = top
-  ctx.fillRect(0, 0, W, cell * 1.2)
+  ctx.fillRect(0, 0, W, cell * 0.7)
   void now
 }
 
@@ -177,5 +177,9 @@ export function drawPreview(ctx: CanvasRenderingContext2D, type: PieceType | nul
   const size = Math.floor(Math.min(w / 4.4, h / 2.6))
   const ox = (w - cols * size) / 2
   const oy = (h - rows * size) / 2
-  for (const [x, y] of cells) drawBlock(ctx, ox + (x - minX) * size, oy + (y - minY) * size, size, type, dim ? 0.4 : 1)
+  ctx.save()
+  // A used hold slot is shown greyed out (filter is ignored where unsupported; alpha still dims it).
+  if (dim) ctx.filter = 'grayscale(1)'
+  for (const [x, y] of cells) drawBlock(ctx, ox + (x - minX) * size, oy + (y - minY) * size, size, type, dim ? 0.5 : 1)
+  ctx.restore()
 }
