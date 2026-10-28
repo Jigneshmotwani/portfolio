@@ -934,11 +934,13 @@ export function search(req: SearchRequest, opts: { random?: () => number; timeMs
     let iterScore = -INF
     const scored: { m: number; s: number }[] = []
     for (const m of rootMoves) {
+      // Noise is folded into the window so bounds (fail-low results) stay bounds.
+      const nz = noise.get(m) ?? 0
       pos.make(m)
-      let sc = -s.negamax(depth - 1, -beta, -alpha, 1, true)
+      let sc = -s.negamax(depth - 1, -beta, -(alpha - nz), 1, true)
       pos.unmake(m)
       if (s.aborted) break
-      if (Math.abs(sc) < MATE - 1000) sc += noise.get(m) ?? 0
+      if (Math.abs(sc) < MATE - 1000) sc += nz
       scored.push({ m, s: sc })
       if (sc > iterScore) {
         iterScore = sc

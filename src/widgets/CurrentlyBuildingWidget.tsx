@@ -44,6 +44,8 @@ export function CurrentlyBuildingWidget({ size, platform }: WidgetProps) {
   const link = cb.link && !isTodo(cb.link) ? cb.link : undefined
   const stack = cb.stack.filter((s) => !isTodo(s))
   const updated = isTodo(cb.updated) ? null : formatMonth(cb.updated)
+  const project = content.projects.find((p) => p.name.toLowerCase() === cb.title.toLowerCase())
+  const highlights = (project?.highlights ?? []).filter((h) => !isTodo(h)).slice(0, 2)
   const eyebrow = (
     <span className="widget-eyebrow widget-cb__eyebrow">
       <Hammer /> Now building
@@ -107,9 +109,16 @@ export function CurrentlyBuildingWidget({ size, platform }: WidgetProps) {
             </div>
             {hasProgress && <Ring progress={cb.progress!} size={64} />}
           </div>
-          <p className="widget-cb__desc widget-cb__desc--6">
+          <p className="widget-cb__desc widget-cb__desc--4">
             <T>{cb.description}</T>
           </p>
+          {highlights.length > 0 && (
+            <ul className="widget-cb__highlights">
+              {highlights.map((h) => (
+                <li key={h}>{h.replace(/`/g, '')}</li>
+              ))}
+            </ul>
+          )}
           <div className="widget-cb__chips">
             {stack.map((s) => (
               <span key={s} className="widget-cb__chip">

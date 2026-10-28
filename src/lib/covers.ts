@@ -55,7 +55,7 @@ export function projectCoverSvg(p: Project): string {
   ).join('')
   const tagline = wrap(p.tagline, 40, 2)
   const nameSize = p.name.length > 22 ? 40 : p.name.length > 14 ? 48 : 58
-  const chip = esc(`${p.context} · ${p.year}`)
+  const chip = esc(p.context.includes(p.year) ? p.context : `${p.context} · ${p.year}`)
   const chipW = Math.round(chip.length * 7.6 + 32)
 
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">

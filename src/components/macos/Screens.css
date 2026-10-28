@@ -1,0 +1,215 @@
+/* ---------- boot ---------- */
+
+.mboot {
+  position: absolute;
+  inset: 0;
+  z-index: 6000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 64px;
+  background: #000;
+  color: #fff;
+  cursor: none;
+}
+
+.mboot__logo {
+  width: 86px;
+  height: 86px;
+  margin-top: 40px;
+  animation: fade-in 0.6s ease;
+}
+
+.mboot__bar {
+  width: 200px;
+  height: 5px;
+  border-radius: 3px;
+  background: rgb(255 255 255 / 0.22);
+  overflow: hidden;
+}
+
+.mboot__fill {
+  width: 100%;
+  height: 100%;
+  border-radius: 3px;
+  background: #fff;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0.1, 0.4, 1);
+}
+
+.mboot__fill.is-running {
+  transform: scaleX(1);
+}
+
+/* ---------- login ---------- */
+
+.mlogin {
+  position: absolute;
+  inset: 0;
+  z-index: 6000;
+  color: #fff;
+  animation: fade-in 0.5s ease;
+  transition:
+    opacity 0.42s ease,
+    transform 0.42s var(--ease-out);
+}
+
+.mlogin.is-leaving {
+  opacity: 0;
+  transform: scale(1.06);
+}
+
+.mlogin .wallpaper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgb(0 0 0 / 0.12);
+}
+
+.mlogin__status {
+  position: absolute;
+  top: 8px;
+  right: 14px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.mlogin__resume {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 22px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.18);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.3);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.mlogin__resume:hover {
+  background: rgb(255 255 255 / 0.28);
+}
+
+.mlogin__clock {
+  position: absolute;
+  top: 9vh;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  text-align: center;
+  text-shadow: 0 2px 16px rgb(0 0 0 / 0.18);
+}
+
+.mlogin__date {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+  opacity: 0.92;
+}
+
+.mlogin__time {
+  font-family: var(--font-rounded);
+  font-size: clamp(84px, 11vw, 124px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  opacity: 0.94;
+  font-variant-numeric: tabular-nums;
+}
+
+.mlogin__user {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 11vh;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.mlogin__avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.35),
+    0 6px 20px rgb(0 0 0 / 0.3);
+}
+
+.mlogin__name {
+  font-size: 15px;
+  font-weight: 600;
+  text-shadow: 0 1px 6px rgb(0 0 0 / 0.3);
+}
+
+.mlogin__field {
+  position: relative;
+  width: 180px;
+  margin-top: 4px;
+}
+
+.mlogin__field input {
+  width: 100%;
+  height: 30px;
+  padding: 0 34px 0 14px;
+  border: 0;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.22);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.24);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  backdrop-filter: blur(16px) saturate(160%);
+  color: #fff;
+  font-size: 13px;
+  outline: none;
+}
+
+.mlogin__field input::placeholder {
+  color: rgb(255 255 255 / 0.72);
+}
+
+.mlogin__field input:focus {
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.45),
+    0 0 0 3px rgb(255 255 255 / 0.18);
+}
+
+.mlogin__go {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgb(255 255 255 / 0.3);
+  color: #fff;
+}
+
+.mlogin__go svg {
+  width: 12px;
+  height: 12px;
+}
+
+.mlogin__go:hover {
+  background: rgb(255 255 255 / 0.45);
+}
+
+.mlogin__hint {
+  margin: 2px 0 0;
+  font-size: 12px;
+  opacity: 0.8;
+  text-shadow: 0 1px 4px rgb(0 0 0 / 0.35);
+}

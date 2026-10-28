@@ -68,9 +68,11 @@ describe('search', () => {
     // The white queen on d4 is attacked by the e5 pawn.
     const res = search({ fen: 'rnbqkbnr/pppp1ppp/8/4p3/3Q4/8/PPPP1PPP/RNB1KBNR w KQkq - 0 3', level: 'medium' }, { random: rng(1) })
     expect(res?.from).toBe('d4')
-    // Black to move can win the white queen with a knight fork-free capture: Qh4 is attacked by the g5 pawn push? Simpler: just take it.
-    const take = search({ fen: 'rnb1kbnr/pppp1ppp/8/4p3/4P2q/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3', level: 'medium' }, { random: rng(2) })
-    expect(take?.to).toBe('h4')
+    // And it takes a queen that is left hanging (Nxh4), whatever the root noise.
+    for (const r of [0, 0.5, 0.99]) {
+      const take = search({ fen: 'rnb1kbnr/pppp1ppp/8/4p3/4P2q/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3', level: 'medium' }, { random: () => r })
+      expect(take?.to).toBe('h4')
+    }
   })
 
   it('returns null when there are no legal moves', () => {

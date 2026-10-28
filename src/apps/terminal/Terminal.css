@@ -1,0 +1,140 @@
+.term {
+  --term-bg: rgb(30 30 32 / 0.94);
+  --term-fg: #e8e8ea;
+  --term-dim: #8e8e96;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--term-bg);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  backdrop-filter: blur(20px) saturate(140%);
+  color: var(--term-fg);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.5;
+  cursor: text;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+:root[data-os-theme='light'] .term {
+  --term-bg: rgb(40 41 46 / 0.95);
+}
+
+.term-scroll {
+  flex: 1;
+  min-height: 0;
+  padding: 8px 10px 12px;
+  scrollbar-color: rgb(255 255 255 / 0.25) transparent;
+}
+
+.term--ios .term-scroll {
+  padding: calc(var(--ios-safe-top, 50px) + 6px) 12px 12px;
+  font-size: 12px;
+}
+
+.term-line {
+  white-space: pre-wrap;
+  word-break: break-word;
+  min-height: 1.5em;
+}
+
+.term-prompt {
+  white-space: pre;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.term-input-line {
+  display: flex;
+  align-items: baseline;
+}
+
+.term-input {
+  flex: 1;
+  min-width: 40px;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--term-fg);
+  font: inherit;
+  caret-color: #5cf08f;
+}
+
+.term--ios .term-input {
+  font-size: 16px; /* avoids iOS zoom-on-focus */
+  line-height: 1.2;
+}
+
+.term-cmd {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-decoration: underline dotted rgb(255 255 255 / 0.35);
+  text-underline-offset: 3px;
+}
+
+.term-cmd:hover {
+  text-decoration-style: solid;
+}
+
+.term-link {
+  color: #6cb6ff;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.term-t-dim {
+  color: var(--term-dim);
+}
+.term-t-accent {
+  color: #ffb86c;
+}
+.term-t-green {
+  color: #5cf08f;
+}
+.term-t-blue {
+  color: #6cb6ff;
+}
+.term-t-yellow {
+  color: #ffd75f;
+}
+.term-t-red {
+  color: #ff6b6b;
+}
+.term-t-magenta {
+  color: #e78cff;
+}
+.term-t-cyan {
+  color: #5ce1e6;
+}
+.term-t-bold {
+  font-weight: 700;
+  color: #fff;
+}
+
+.term-quick {
+  flex: none;
+  display: flex;
+  gap: 6px;
+  padding: 8px 12px calc(var(--ios-safe-bottom, 34px) + 4px);
+  overflow-x: auto;
+  border-top: 1px solid rgb(255 255 255 / 0.08);
+  background: rgb(0 0 0 / 0.2);
+}
+
+.term-quick button {
+  flex: none;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: 15px;
+  background: rgb(255 255 255 / 0.1);
+  color: var(--term-fg);
+  font: 500 13px var(--font-mono);
+}
+
+.term-quick button:active {
+  background: rgb(255 255 255 / 0.2);
+}

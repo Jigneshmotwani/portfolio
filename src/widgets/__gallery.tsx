@@ -1,0 +1,31 @@
+// THROWAWAY screenshot gallery — delete before finishing.
+import { createRoot } from 'react-dom/client'
+import '../styles/global.css'
+import { ClockWeatherWidget, CurrentlyBuildingWidget, GitHubContributionsWidget } from './index'
+
+const q = new URLSearchParams(location.search)
+const theme = q.get('theme') ?? 'light'
+const platform = (q.get('platform') ?? 'mac') as 'mac' | 'ios'
+document.documentElement.setAttribute('data-os-theme', theme)
+document.body.style.background = `url(/wallpapers/${theme === 'dark' ? 'aurora' : 'dunes'}.svg) center/cover`
+document.body.style.overflow = 'auto'
+
+const sizes = ['small', 'medium', 'large'] as const
+function Cell({ children, size }: { children: React.ReactNode; size: string }) {
+  if (platform === 'mac') return <div>{children}</div>
+  const w = size === 'small' ? 165 : 350
+  return <div style={{ width: w }}>{children}</div>
+}
+createRoot(document.getElementById('root')!).render(
+  <div style={{ display: 'flex', flexDirection: 'column', gap: 18, padding: 18 }}>
+    {[ClockWeatherWidget, GitHubContributionsWidget, CurrentlyBuildingWidget].map((W, i) => (
+      <div key={i} style={{ display: 'flex', gap: 18, alignItems: 'flex-start', flexWrap: 'wrap' }}>
+        {sizes.map((s) => (
+          <Cell key={s} size={s}>
+            <W size={s} platform={platform} />
+          </Cell>
+        ))}
+      </div>
+    ))}
+  </div>,
+)

@@ -1,0 +1,337 @@
+.contacts-mac {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.contacts-sidebar {
+  flex: none;
+  width: 210px;
+  display: flex;
+  flex-direction: column;
+  background: var(--sidebar);
+  -webkit-backdrop-filter: var(--material-blur);
+  backdrop-filter: var(--material-blur);
+  border-right: 1px solid var(--separator);
+  padding: 0 10px;
+}
+
+.contacts-sidebar__top {
+  height: 52px;
+  margin: 0 -10px;
+}
+
+.contacts-sidebar__search {
+  padding-bottom: 10px;
+}
+
+.contacts-sidebar__heading {
+  padding: 2px 6px 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--fg-tertiary);
+}
+
+.contacts-sidebar__letter {
+  padding: 4px 8px 2px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--fg-secondary);
+  border-bottom: 1px solid var(--separator);
+  margin-bottom: 3px;
+}
+
+.contacts-sidebar__row {
+  height: 26px;
+  padding: 0 8px;
+  border-radius: 6px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.contacts-sidebar__row.is-on {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.contacts-mac.is-inactive .contacts-sidebar__row.is-on {
+  background: var(--control-strong);
+  color: var(--fg);
+}
+
+.contacts-sidebar__empty {
+  padding: 6px;
+  color: var(--fg-secondary);
+}
+
+.contacts-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.contacts-toolbar {
+  flex: none;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 0 14px;
+}
+
+.contacts-tool {
+  width: 30px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  color: var(--fg-secondary);
+}
+
+.contacts-tool:hover {
+  background: var(--hover);
+}
+
+.contacts-flash {
+  font-size: 12px;
+  color: var(--fg-secondary);
+  animation: fade-in 0.2s;
+}
+
+.contacts-card {
+  flex: 1;
+  min-height: 0;
+  padding: 4px 32px 28px;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.contacts-card__head {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.contacts-card__photo {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 1px var(--separator);
+}
+
+.contacts-card__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.contacts-card__headline,
+.contacts-card__loc {
+  margin: 1px 0 0;
+  color: var(--fg-secondary);
+}
+
+.contacts-actions {
+  display: flex;
+  gap: 18px;
+  margin: 18px 0 20px;
+  padding-left: 2px;
+}
+
+.contacts-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: var(--fg-secondary);
+  text-decoration: none !important;
+}
+
+.contacts-action__circle {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--control);
+  color: var(--accent);
+  transition: background 0.15s;
+}
+
+.contacts-action:hover .contacts-action__circle {
+  background: var(--control-strong);
+}
+
+.contacts-action__label {
+  font-size: 11px;
+}
+
+.contacts-fields {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--separator);
+}
+
+.contacts-field {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.contacts-field dt {
+  text-align: right;
+  font-size: 12px;
+  color: var(--fg-secondary);
+}
+
+.contacts-field dd {
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.contacts-field__value {
+  text-align: left;
+}
+
+button.contacts-field__value {
+  color: var(--accent);
+}
+
+button.contacts-field__value:hover {
+  text-decoration: underline;
+}
+
+.contacts-field__note p {
+  margin: 0 0 4px;
+}
+
+.contacts-card__footer {
+  display: flex;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+/* ── iOS ───────────────────────────────────────────────────────────────── */
+.contacts-ioshead {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4px 16px 18px;
+  text-align: center;
+}
+
+.contacts-ioshead__photo {
+  width: 116px;
+  height: 116px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 6px 20px rgb(0 0 0 / 0.16);
+}
+
+.contacts-ioshead__name {
+  margin: 12px 0 2px;
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.contacts-ioshead__headline {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ik-label2);
+}
+
+.contacts-iosactions {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 0 16px 24px;
+}
+
+.contacts-iosaction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 9px 0 8px;
+  border-radius: 10px;
+  background: var(--ik-cell);
+  color: var(--accent);
+  text-decoration: none !important;
+}
+
+.contacts-iosaction:active {
+  opacity: 0.6;
+}
+
+.contacts-iosaction__circle svg {
+  width: 22px;
+  height: 22px;
+}
+
+.contacts-iosaction__label {
+  font-size: 11px;
+}
+
+.contacts-iosfield {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 11px 16px;
+  text-align: left;
+}
+
+.contacts-iosfield__label {
+  font-size: 14px;
+  color: var(--fg);
+}
+
+.contacts-iosfield__value {
+  font-size: 17px;
+  color: var(--fg);
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.contacts-iosfield__value.is-link {
+  color: var(--accent);
+}
+
+.contacts-iosmycard {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.contacts-iosmycard__name {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.contacts-toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--ios-safe-bottom, 34px) + 20px);
+  transform: translateX(-50%);
+  padding: 8px 14px;
+  border-radius: 12px;
+  background: rgb(30 30 30 / 0.86);
+  color: #fff;
+  font-size: 14px;
+  white-space: nowrap;
+  animation: fade-in 0.2s;
+}

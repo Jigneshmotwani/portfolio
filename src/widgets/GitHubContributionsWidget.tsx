@@ -18,7 +18,8 @@ import { Widget } from './Widget'
 
 type Mode = 'loading' | 'data' | 'image' | 'offline'
 
-const WEEKS: Record<WidgetSize, number> = { small: 10, medium: 22, large: 22 }
+/** Week columns per size; large shows the whole year as two stacked half-year bands. */
+const WEEKS: Record<WidgetSize, number> = { small: 10, medium: 22, large: 52 }
 const CELL = 10
 const GAP = 3
 const PITCH = CELL + GAP
@@ -122,6 +123,11 @@ export function GitHubContributionsWidget({ size, platform }: WidgetProps) {
             referrerPolicy="no-referrer"
             onError={() => setMode('offline')}
           />
+        ) : size === 'large' ? (
+          <div className="widget-gh__bands">
+            <Grid weeks={weeks.slice(0, Math.ceil(weeks.length / 2))} months size={size} />
+            <Grid weeks={weeks.slice(Math.ceil(weeks.length / 2))} months size={size} />
+          </div>
         ) : (
           <Grid weeks={weeks} months={size !== 'small'} size={size} />
         )}

@@ -169,11 +169,6 @@ export interface KnowledgeChunk {
   answer: string
 }
 
-const firstSentence = (s: string) => {
-  const m = /^(.+?[.!?])(\s|$)/.exec(s)
-  return m ? m[1] : s
-}
-
 function experienceAnswer(c: Content, e: Experience): string {
   const name = c.profile.firstName
   const current = e.end === null

@@ -1,0 +1,221 @@
+.mdesk {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  animation: mdesk-in 0.6s var(--ease-out);
+}
+
+@keyframes mdesk-in {
+  from {
+    opacity: 0;
+    transform: scale(1.03);
+  }
+}
+
+.mdesk__surface {
+  position: absolute;
+  inset: 28px 0 0;
+  z-index: 1;
+}
+
+/* ---------- widgets (left) ---------- */
+
+.mdesk__widgets {
+  position: absolute;
+  top: 18px;
+  left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 360px;
+}
+
+.mdesk__widget-row {
+  display: flex;
+  gap: 20px;
+}
+
+.mdesk__widget-row > *,
+.mdesk__widget-wide > * {
+  flex: none;
+}
+
+@media (max-width: 1100px), (max-height: 640px) {
+  .mdesk__widget-wide {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .mdesk__widgets {
+    display: none;
+  }
+}
+
+/* ---------- folder icons (right) ---------- */
+
+.mdesk__icons {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mdesk__icon {
+  width: 92px;
+  padding: 4px 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  border-radius: 6px;
+  color: #fff;
+}
+
+.mdesk__icon img {
+  width: 64px;
+  height: 54px;
+  padding: 2px 3px;
+  border-radius: 6px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.25));
+}
+
+.mdesk__icon span {
+  max-width: 88px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.25;
+  text-align: center;
+  text-shadow:
+    0 1px 2px rgb(0 0 0 / 0.65),
+    0 0 1px rgb(0 0 0 / 0.5);
+}
+
+.mdesk__icon.is-selected img {
+  background: rgb(0 0 0 / 0.22);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.28);
+}
+
+.mdesk__icon.is-selected span {
+  background: var(--accent);
+  color: var(--accent-contrast);
+  text-shadow: none;
+}
+
+.mdesk__icon:focus-visible {
+  outline: none;
+}
+
+.mdesk__icon:focus-visible img {
+  outline: 2px solid var(--accent);
+}
+
+/* ---------- Ask Jignesh orb ---------- */
+
+.mdesk__orb {
+  position: absolute;
+  right: 22px;
+  bottom: 96px;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  height: 52px;
+  padding: 0;
+  border-radius: 999px;
+  color: #fff;
+}
+
+.mdesk__orb-core {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  flex: none;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 30%, #7df3ff 0, rgb(125 243 255 / 0) 55%),
+    radial-gradient(circle at 75% 38%, #ff4fd8 0, rgb(255 79 216 / 0) 58%),
+    radial-gradient(circle at 50% 85%, #7b5cff 0, rgb(123 92 255 / 0) 62%),
+    #161032;
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.22),
+    0 8px 24px rgb(80 40 200 / 0.45),
+    0 0 28px rgb(140 110 255 / 0.45);
+  animation: mdesk-orb 6s linear infinite;
+  transition: transform 0.25s var(--ease-spring);
+}
+
+.mdesk__orb-core::after {
+  content: '';
+  position: absolute;
+  top: 9px;
+  left: 13px;
+  width: 16px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.45);
+  filter: blur(1px);
+}
+
+@keyframes mdesk-orb {
+  to {
+    filter: hue-rotate(360deg);
+  }
+}
+
+.mdesk__orb-label {
+  order: -1;
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0;
+  padding: 7px 0;
+  border-radius: 999px;
+  background: var(--material-thick);
+  -webkit-backdrop-filter: var(--material-blur);
+  backdrop-filter: var(--material-blur);
+  color: var(--fg);
+  transition:
+    max-width 0.3s var(--ease-out),
+    opacity 0.2s,
+    padding 0.3s var(--ease-out),
+    margin 0.3s var(--ease-out);
+}
+
+.mdesk__orb:hover .mdesk__orb-label,
+.mdesk__orb:focus-visible .mdesk__orb-label {
+  max-width: 160px;
+  opacity: 1;
+  padding: 7px 12px;
+  margin-right: 10px;
+  box-shadow: var(--menu-shadow);
+}
+
+.mdesk__orb:hover .mdesk__orb-core {
+  transform: scale(1.08);
+}
+
+.mdesk__orb:focus-visible {
+  outline: none;
+}
+
+.mdesk__orb:focus-visible .mdesk__orb-core {
+  outline: 3px solid color-mix(in srgb, var(--accent) 60%, transparent);
+  outline-offset: 3px;
+}
+
+/* System overlays sit above the menu bar and dock. */
+.mdesk__overlays {
+  position: relative;
+  z-index: 3000;
+}

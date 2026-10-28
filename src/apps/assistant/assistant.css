@@ -1,0 +1,660 @@
+/* ── Ask Jignesh: window (macOS) ─────────────────────────────────────── */
+.aj-app {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(120% 60% at 50% -20%, color-mix(in srgb, #8f7bff 16%, transparent), transparent 70%),
+    var(--bg);
+  color: var(--fg);
+}
+
+.aj-header {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 56px;
+  padding: 0 12px 0 84px;
+  border-bottom: 0.5px solid var(--separator);
+}
+
+.aj-app--ios .aj-header {
+  padding-left: 16px;
+  padding-top: var(--ios-top, 0px);
+  height: auto;
+  min-height: 56px;
+}
+
+.aj-header__titles {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+  line-height: 1.2;
+}
+
+.aj-header__title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.aj-header__sub {
+  font-size: 11px;
+  color: var(--fg-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.aj-icon-btn {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  color: var(--fg-secondary);
+}
+
+.aj-icon-btn:hover:not(:disabled) {
+  background: var(--hover);
+  color: var(--fg);
+}
+
+.aj-icon-btn:disabled {
+  opacity: 0.4;
+}
+
+.aj-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--control);
+  color: var(--fg-secondary);
+  font-size: 10.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.aj-badge__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gray);
+}
+
+.aj-badge--live .aj-badge__dot {
+  background: var(--green);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--green) 25%, transparent);
+}
+
+/* ── Orb ─────────────────────────────────────────────────────────────── */
+.aj-orb {
+  --aj-orb-size: 40px;
+  position: relative;
+  flex: none;
+  display: inline-block;
+  width: var(--aj-orb-size);
+  height: var(--aj-orb-size);
+  border-radius: 50%;
+  overflow: hidden;
+  isolation: isolate;
+  background: radial-gradient(circle at 50% 62%, #241a5c, #07050f 72%);
+  box-shadow:
+    0 0 calc(var(--aj-orb-size) * 0.32) color-mix(in srgb, #8f7bff 55%, transparent),
+    inset 0 0 0 0.5px rgb(255 255 255 / 0.25);
+  transform: translateZ(0);
+}
+
+.aj-orb__swirl {
+  position: absolute;
+  inset: -30%;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, #6ef3ff, #7b5cff, #ff4fd8, #ffb86b, #6ef3ff);
+  filter: blur(calc(var(--aj-orb-size) * 0.16));
+  mix-blend-mode: screen;
+  opacity: 0.85;
+  animation: aj-spin 7s linear infinite;
+}
+
+.aj-orb__swirl--b {
+  inset: -8%;
+  background:
+    radial-gradient(circle at 28% 30%, #6ef3ff 0, transparent 46%),
+    radial-gradient(circle at 74% 70%, #ff4fd8 0, transparent 46%),
+    radial-gradient(circle at 70% 24%, #7b5cff 0, transparent 40%);
+  opacity: 0.9;
+  animation-duration: 11s;
+  animation-direction: reverse;
+}
+
+.aj-orb__shine {
+  position: absolute;
+  top: 12%;
+  left: 20%;
+  width: 42%;
+  height: 26%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(255 255 255 / 0.7), transparent);
+  filter: blur(1px);
+}
+
+.aj-orb--thinking {
+  animation: aj-pulse 1.1s ease-in-out infinite;
+}
+
+.aj-orb--thinking .aj-orb__swirl {
+  animation-duration: 1.4s;
+}
+
+.aj-orb--thinking .aj-orb__swirl--b {
+  animation-duration: 2.2s;
+}
+
+@keyframes aj-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes aj-pulse {
+  50% {
+    transform: scale(1.07);
+    box-shadow: 0 0 calc(var(--aj-orb-size) * 0.6) color-mix(in srgb, #ff4fd8 50%, transparent);
+  }
+}
+
+/* ── Chat ────────────────────────────────────────────────────────────── */
+.aj-chat {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.aj-chat__list {
+  flex: 1;
+  min-height: 0;
+  padding: 16px 14px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.aj-empty {
+  margin: auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 6px 4px;
+  text-align: center;
+}
+
+.aj-empty__greeting {
+  margin: 0;
+  max-width: 34ch;
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--fg-secondary);
+  text-wrap: balance;
+}
+
+.aj-starters,
+.aj-followups {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.aj-followups {
+  justify-content: flex-start;
+  padding-top: 2px;
+}
+
+.aj-starter {
+  padding: 6px 11px;
+  border-radius: 999px;
+  border: 0.5px solid var(--separator-strong);
+  background: var(--bg-elevated);
+  color: var(--fg);
+  font-size: 12.5px;
+  line-height: 1.25;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.15s;
+}
+
+.aj-starter:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.aj-starter:active {
+  transform: scale(0.97);
+}
+
+.aj-starter--small {
+  font-size: 11.5px;
+  padding: 4px 9px;
+  color: var(--fg-secondary);
+}
+
+.aj-msg {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  animation: aj-in 0.22s var(--ease-out) both;
+}
+
+.aj-msg--user {
+  align-items: flex-end;
+}
+
+@keyframes aj-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+.aj-bubble {
+  max-width: 88%;
+  padding: 8px 12px;
+  border-radius: 18px;
+  background: var(--bg-tertiary);
+  color: var(--fg);
+  font-size: 13px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.aj-msg--user .aj-bubble {
+  background: var(--accent);
+  color: var(--accent-contrast);
+  border-bottom-right-radius: 6px;
+}
+
+.aj-msg--assistant .aj-bubble {
+  border-bottom-left-radius: 6px;
+}
+
+.aj-bubble p,
+.aj-bubble ul {
+  margin: 0;
+}
+
+.aj-bubble p + p,
+.aj-bubble p + ul,
+.aj-bubble ul + p,
+.aj-bubble ul + ul {
+  margin-top: 7px;
+}
+
+.aj-bubble ul {
+  padding-left: 18px;
+}
+
+.aj-bubble li + li {
+  margin-top: 3px;
+}
+
+.aj-bubble a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+  text-underline-offset: 2px;
+}
+
+.aj-msg--assistant .aj-bubble a {
+  color: var(--accent);
+}
+
+.aj-bubble code {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  padding: 0 4px;
+  border-radius: 4px;
+  background: var(--control);
+}
+
+.aj-muted {
+  color: var(--fg-secondary);
+  font-style: italic;
+}
+
+.aj-caret {
+  display: inline-block;
+  width: 7px;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: -2px;
+  border-radius: 2px;
+  background: currentColor;
+  opacity: 0.55;
+  animation: aj-blink 1s steps(2, start) infinite;
+}
+
+.aj-bubble--streaming > p:last-of-type:nth-last-child(2) {
+  display: inline;
+}
+
+@keyframes aj-blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+.aj-typing {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px 2px;
+}
+
+.aj-typing i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--fg-secondary);
+  animation: aj-dot 1.2s ease-in-out infinite;
+}
+
+.aj-typing i:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.aj-typing i:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes aj-dot {
+  0%,
+  60%,
+  100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
+.aj-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.aj-action:hover {
+  background: color-mix(in srgb, var(--accent) 24%, transparent);
+}
+
+.aj-composer {
+  flex: none;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  margin: 6px 12px 12px;
+  padding: 5px 5px 5px 14px;
+  border-radius: 20px;
+  border: 0.5px solid var(--field-border);
+  background: var(--field);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.06);
+}
+
+.aj-composer:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.aj-composer__input {
+  flex: 1;
+  min-width: 0;
+  resize: none;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  padding: 5px 0;
+  font-size: 13px;
+  line-height: 1.4;
+  max-height: 120px;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.aj-composer__input::placeholder {
+  color: var(--fg-tertiary);
+}
+
+.aj-composer__btn {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.aj-composer__btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.aj-composer__btn:not(:disabled):active {
+  transform: scale(0.92);
+}
+
+.aj-composer__btn--stop {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+/* iOS sizing: 16px input avoids Safari's focus zoom. */
+.aj-chat--ios .aj-bubble {
+  font-size: 15px;
+}
+
+.aj-chat--ios .aj-composer__input {
+  font-size: 16px;
+}
+
+.aj-chat--ios .aj-starter {
+  font-size: 14px;
+  padding: 8px 13px;
+}
+
+.aj-chat--ios .aj-starter--small {
+  font-size: 13px;
+}
+
+.aj-chat--ios .aj-empty__greeting {
+  font-size: 15px;
+}
+
+.aj-chat--ios .aj-composer {
+  margin-bottom: 10px;
+}
+
+/* ── Siri overlay (iOS) ──────────────────────────────────────────────── */
+@property --siri-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.siri {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  pointer-events: none;
+}
+
+.siri__scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: auto;
+  background: rgb(0 0 0 / 0.3);
+  animation: fade-in 0.3s ease both;
+}
+
+.siri__glow {
+  position: absolute;
+  inset: 0;
+  animation: siri-glow-in 0.6s var(--ease-out) both;
+}
+
+.siri__ring {
+  position: absolute;
+  inset: 0;
+  padding: 4px;
+  border-radius: var(--siri-radius, 0px);
+  background: conic-gradient(from var(--siri-angle), #ff6ec4, #a46bff, #4f8cff, #2fe0c8, #ffd166, #ff7a59, #ff6ec4);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+  animation: siri-rotate 4s linear infinite;
+}
+
+.siri__ring--blur {
+  padding: 16px;
+  filter: blur(18px);
+  opacity: 0.85;
+}
+
+.siri--thinking .siri__ring {
+  animation-duration: 1.6s;
+}
+
+.siri--thinking .siri__ring--blur {
+  padding: 24px;
+  opacity: 1;
+}
+
+@keyframes siri-rotate {
+  to {
+    --siri-angle: 360deg;
+  }
+}
+
+@keyframes siri-glow-in {
+  from {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+}
+
+.siri__sheet {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+  height: min(74%, 680px);
+  display: flex;
+  flex-direction: column;
+  border-radius: 30px;
+  overflow: hidden;
+  pointer-events: auto;
+  background: var(--material-thick);
+  -webkit-backdrop-filter: var(--material-blur);
+  backdrop-filter: var(--material-blur);
+  box-shadow:
+    0 0 0 0.5px var(--material-border),
+    0 20px 60px rgb(0 0 0 / 0.35);
+  color: var(--fg);
+  animation: siri-sheet-in 0.45s var(--ease-spring) both;
+}
+
+@keyframes siri-sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.96);
+  }
+}
+
+.siri__grabber {
+  width: 36px;
+  height: 5px;
+  margin: 7px auto 0;
+  border-radius: 3px;
+  background: var(--fg-tertiary);
+}
+
+.siri__header {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 12px 10px 16px;
+  border-bottom: 0.5px solid var(--separator);
+}
+
+.siri__titles {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+}
+
+.siri__title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.siri__close {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--control);
+  color: var(--fg-secondary);
+}
+
+.siri__close:active {
+  background: var(--control-strong);
+}
+
+.aj-chat--ios .aj-followups {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin: 0 -14px;
+  padding: 2px 14px;
+}
+
+.aj-chat--ios .aj-followups::-webkit-scrollbar {
+  display: none;
+}
+
+.aj-chat--ios .aj-followups .aj-starter {
+  flex: none;
+}

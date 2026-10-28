@@ -123,7 +123,7 @@ export function snippet(source: string, max = 90): string {
   const blocks = parseBlocks(source).filter((b) => b.kind !== 'h' || b.level > 1)
   const first = blocks.find((b) => b.kind !== 'h') ?? blocks[0]
   if (!first) return ''
-  const text = first.kind === 'ul' || first.kind === 'ol' ? first.items.join(' · ') : first.text
+  const text = 'items' in first ? first.items.join(' · ') : first.text
   const plain = text
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
     .replace(/[*_`]/g, '')
