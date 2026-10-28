@@ -12,7 +12,7 @@
  *  See types.ts for the conventions, and ASSUMPTIONS.md for what was guessed.
  * ────────────────────────────────────────────────────────────────────────
  */
-import type { Content } from './types'
+import type { Content } from './types.ts'
 
 export const content: Content = {
   site: {
