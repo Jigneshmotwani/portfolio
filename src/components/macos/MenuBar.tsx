@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { apps, appName } from '../../apps/registry'
 import { content } from '../../data/content'
 import { formatMenuBarDate } from '../../lib/format'
@@ -233,7 +233,7 @@ export function MenuBar({ onLock, onRestart }: { onLock: () => void; onRestart: 
     ],
   }
 
-  const title = (id: MenuId, label: React.ReactNode, extra = '') => (
+  const title = (id: MenuId, label: ReactNode, extra = '') => (
     <button
       ref={(el) => void (btnRefs.current[id] = el)}
       className={`mbar__item${open === id ? ' is-open' : ''}${extra}`}
