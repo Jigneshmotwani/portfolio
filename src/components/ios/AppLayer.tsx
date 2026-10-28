@@ -136,6 +136,7 @@ export function AppLayer() {
     if (!el) return
     cancel(el)
     clearStyles(el)
+    setClosing((c) => (c === id ? null : c))
     const splash = el.querySelector<HTMLElement>('.ios-app__splash')
     const r = iconRect(id)
     if (r) {
@@ -440,7 +441,6 @@ export function AppLayer() {
         if (!r) return null
         const isActive = active === id && !switcher
         const cls = `ios-app${isActive ? ' ios-app--active' : ''}${closing === id && !isActive ? ' ios-app--closing' : ''}${switcher ? ' ios-app--card' : ''}`
-        const lastActive = cardsRef.current[cardsRef.current.length - 1] === id
         return (
           <div
             key={id}
@@ -452,7 +452,6 @@ export function AppLayer() {
             }}
             aria-hidden={!isActive}
             inert={!isActive}
-            data-last={lastActive || undefined}
           >
             <AppFrame appId={id} instanceId={`ios-${id}`} platform="ios" active={isActive} params={r.params} setTitle={noop} close={useIOS.getState().goHome} />
             <div className="ios-app__splash" aria-hidden="true">

@@ -238,7 +238,7 @@ function MacMail({ mail }: { mail: MailState }) {
 
   useEffect(() => {
     if (msg && !msg.read) mail.markRead(msg.id)
-  }, [msg, mail])
+  }, [msg, mail.markRead])
 
   useEffect(() => setTitle(mail.draft ? 'New Message' : `${boxLabel}${unread ? ` (${unread} unread)` : ''}`), [mail.draft, boxLabel, unread, setTitle])
 
@@ -350,7 +350,7 @@ function IOSMail({ mail }: { mail: MailState }) {
 
   useEffect(() => {
     if (top.startsWith('msg:')) mail.markRead(top.slice(4))
-  }, [top, mail])
+  }, [top, mail.markRead])
 
   const composeBtn = (
     <button type="button" className="mail-iosbar__btn" aria-label="New message" onClick={() => mail.compose()}>
