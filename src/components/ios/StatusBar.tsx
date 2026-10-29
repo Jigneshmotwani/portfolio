@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
 import { useMediaQuery, useNow } from '../../lib/hooks'
 import { openResume } from '../../lib/launch'
+import { useTopActivity } from '../../state/island'
 import { useSystem } from '../../state/system'
 import { DynamicIsland } from './DynamicIsland'
 import { BatteryGlyph, DocGlyph, SignalGlyph, WifiGlyph } from './glyphs'
@@ -49,6 +50,7 @@ export function StatusBar({ tone, carrier = false }: { tone: 'light' | 'adaptive
   const now = useNow(60_000)
   const narrow = useMediaQuery('(max-width: 379px)')
   const battery = useBattery()
+  const hasActivity = useTopActivity() !== null
   const toggleCC = useSystem((s) => s.toggleControlCenter)
   const toggleNC = useSystem((s) => s.toggleNotificationCenter)
   const drag = useRef<{ x: number; y: number; id: number; fired: boolean } | null>(null)
@@ -83,7 +85,7 @@ export function StatusBar({ tone, carrier = false }: { tone: 'light' | 'adaptive
 
   return (
     <header
-      className={`ios-status ios-status--${tone}`}
+      className={`ios-status ios-status--${tone}${hasActivity ? ' ios-status--activity' : ''}`}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerEnd}

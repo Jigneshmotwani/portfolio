@@ -88,3 +88,14 @@
   outline-offset: 2px;
   border-radius: 8px;
 }
+
+/* A live activity widens the Dynamic Island: make room like iOS does. */
+.ios-status--activity .ios-status__left,
+.ios-status--activity .ios-status__right {
+  width: calc(50% - min(107px, 50vw - 75px) - 8px);
+}
+
+.ios-status--activity .ios-status__resume,
+.ios-status--activity .ios-status__right .ios-glyph:first-child {
+  display: none;
+}
