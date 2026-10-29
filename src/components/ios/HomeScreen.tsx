@@ -59,8 +59,10 @@ function useGridMetrics(ref: RefObject<HTMLElement | null>) {
   }, [ref])
   const pad = Math.round(Math.max(16, size.w * 0.06))
   const cell = (size.w - pad * 2) / 4
-  const icon = Math.round(Math.min(64, Math.max(48, cell * 0.7)))
-  const row = Math.max(78, size.h / 6)
+  const row = size.h / 6
+  // Icon + 5px gap + label must fit one grid row, so short viewports (phone browsers
+  // with toolbars) get slightly smaller icons instead of overlapping labels.
+  const icon = Math.round(Math.max(40, Math.min(64, Math.max(48, cell * 0.7), row - 22)))
   const small = Math.round(Math.min(cell + icon + 12, row * 2 - 12))
   const inset = Math.max(0, (cell - icon - 12) / 2)
   const wide = Math.round(cell * 4 - inset * 2)

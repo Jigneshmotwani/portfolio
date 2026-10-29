@@ -48,7 +48,7 @@ function useBattery() {
  */
 export function StatusBar({ tone, carrier = false }: { tone: 'light' | 'adaptive'; carrier?: boolean }) {
   const now = useNow(60_000)
-  const narrow = useMediaQuery('(max-width: 379px)')
+  const narrow = useMediaQuery('(max-width: 439px)')
   const battery = useBattery()
   const hasActivity = useTopActivity() !== null
   const toggleCC = useSystem((s) => s.toggleControlCenter)
@@ -100,7 +100,7 @@ export function StatusBar({ tone, carrier = false }: { tone: 'light' | 'adaptive
         )}
         <button className="ios-status__resume" onClick={guard(openResume)} aria-label="View resume">
           <DocGlyph />
-          <span>{narrow ? 'CV' : 'Resume'}</span>
+          <span>{narrow && !carrier ? 'CV' : 'Resume'}</span>
         </button>
       </div>
       <DynamicIsland />
