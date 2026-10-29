@@ -35,6 +35,7 @@ export function Dock() {
   const reduced = useReducedMotion()
   const magnify = magnifyPref && !reduced
   const itemRefs = useRef<(HTMLElement | null)[]>([])
+  const dockRef = useRef<HTMLElement>(null)
   const raf = useRef(0)
   const mouseX = useRef<number | null>(null)
   const [tracking, setTracking] = useState(false)
@@ -58,21 +59,43 @@ export function Dock() {
   const update = useCallback(() => {
     raf.current = 0
     const mx = mouseX.current
-    const total = SLOTS.reduce((acc, s) => acc + slotWidth(s), 0) + GAP * (SLOTS.length - 1) + PAD * 2
-    let left = (window.innerWidth - total) / 2 + PAD
-    SLOTS.forEach((slot, i) => {
-      const w = slotWidth(slot)
-      const el = itemRefs.current[i]
-      const center = left + w / 2
-      left += w + GAP
-      if (!el || slot.kind === 'sep') return
-      let s = 1
-      if (mx != null) {
-        const d = Math.abs(mx - center)
-        if (d < RANGE) s = 1 + (MAX - 1) * ((Math.cos((Math.PI * d) / RANGE) + 1) / 2)
-      }
-      el.style.setProperty('--s', s.toFixed(3))
+    const widths = SLOTS.map(slotWidth)
+    const baseTotal = widths.reduce((a, b) => a + b, 0) + GAP * (SLOTS.length - 1) + PAD * 2
+    const baseLeft = (window.innerWidth - baseTotal) / 2
+    // Scale every slot from its distance to the cursor in the *unmagnified* layout.
+    let left = PAD
+    const scales = SLOTS.map((slot, i) => {
+      const center = baseLeft + left + widths[i] / 2
+      left += widths[i] + GAP
+      if (mx == null || slot.kind === 'sep') return 1
+      const d = Math.abs(mx - center)
+      return d < RANGE ? 1 + (MAX - 1) * ((Math.cos((Math.PI * d) / RANGE) + 1) / 2) : 1
     })
+    SLOTS.forEach((slot, i) => {
+      const el = itemRefs.current[i]
+      if (el && slot.kind !== 'sep') el.style.setProperty('--s', scales[i].toFixed(3))
+    })
+    // Shift the (centred) dock so the point under the cursor stays under the cursor.
+    let shift = 0
+    if (mx != null) {
+      const u = mx - baseLeft
+      let b = PAD
+      let n = PAD
+      let mapped = u
+      for (let i = 0; i < SLOTS.length; i++) {
+        const w = widths[i]
+        const nw = w * scales[i]
+        if (u < b + w || i === SLOTS.length - 1) {
+          mapped = u < b ? n - (b - u) : n + Math.min(u - b, w) * scales[i]
+          break
+        }
+        b += w + GAP
+        n += nw + GAP
+      }
+      const newTotal = widths.reduce((acc, w, i) => acc + w * scales[i], 0) + GAP * (SLOTS.length - 1) + PAD * 2
+      shift = mx - ((window.innerWidth - newTotal) / 2 + mapped)
+    }
+    dockRef.current?.style.setProperty('--shift', `${shift.toFixed(1)}px`)
   }, [])
 
   const onMove = (e: ReactPointerEvent) => {
@@ -134,7 +157,7 @@ export function Dock() {
 
   return (
     <>
-      <nav className={`dock${tracking ? ' dock--tracking' : ''}`} aria-label="Dock" onPointerMove={onMove} onPointerLeave={onLeave}>
+      <nav ref={dockRef} className={`dock${tracking ? ' dock--tracking' : ''}`} aria-label="Dock" onPointerMove={onMove} onPointerLeave={onLeave}>
         <div className="dock__shelf" />
         <div className="dock__row">
           {SLOTS.map((slot, i) => {

@@ -1,10 +1,12 @@
 .dock {
   --base: 50px;
+  --shift: 0px;
   position: absolute;
   left: 50%;
   bottom: 6px;
   z-index: 1000;
-  transform: translateX(-50%);
+  transform: translateX(calc(-50% + var(--shift)));
+  transition: transform 0.22s var(--ease-out);
   padding: 0 6px;
   height: calc(var(--base) + 12px);
 }
@@ -54,6 +56,7 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+.dock--tracking,
 .dock--tracking .dock__item {
   transition: none;
 }

@@ -499,7 +499,7 @@ export function AppLayer() {
       )}
 
       <div
-        className={`ios-indicator${indicatorLight ? ' ios-indicator--light' : ''}`}
+        className={`ios-indicator${indicatorLight ? ' ios-indicator--light' : ''}${!active && !switcher ? ' ios-indicator--idle' : ''}`}
         onPointerDown={onIndicatorDown}
         onPointerMove={onIndicatorMove}
         onPointerUp={onIndicatorUp}

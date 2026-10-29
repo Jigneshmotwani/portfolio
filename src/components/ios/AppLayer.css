@@ -141,3 +141,7 @@
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
+
+.ios-indicator--idle .ios-indicator__bar {
+  opacity: 0;
+}

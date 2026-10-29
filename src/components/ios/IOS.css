@@ -1,0 +1,11 @@
+.ios {
+  --ios-status-h: max(50px, env(safe-area-inset-top, 0px));
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #000;
+  font-family: var(--font-sans);
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
