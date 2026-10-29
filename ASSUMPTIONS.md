@@ -59,5 +59,8 @@ dashed yellow outline. Set it to `false` to hide them. The resume and the AI ass
 - **Breakpoint**: below 768px wide you get iOS, at 768px and above you get macOS. That means iPads get macOS.
 - **Boot / lock screens** show once per browser session. Reloading in the same tab goes straight to the
   desktop or home screen. Add `?skipboot` to any URL to skip them.
-- **AI model and costs**: the proxy defaults to a small, fast Claude model with a short answer limit and
-  rate limiting. See `api/README.md` to change it.
+- **AI model and costs**: the proxy defaults to Claude Opus 5.5 at low effort, with short answers and
+  per-visitor rate limiting. For a cheaper public bot set `ANTHROPIC_MODEL = "claude-haiku-5-5"` in
+  `api/wrangler.toml`. See `api/README.md`.
+- **Chess and Tetris share one Dynamic Island slot**: if both games run at once, the island shows whichever
+  updated last.

@@ -257,7 +257,7 @@ export const content: Content = {
         'Lock-free commits: the server rebases non-conflicting commits onto newer history and appends with optimistic compare-and-swap.',
         'Clients fetch content-addressed (BLAKE3) objects lazily and keep a bounded local cache.',
         'Derived data such as root trees, a path-history index and incremental line blame are computed from the changeset log.',
-        'Workspace of crates: core, server (axum), client + `bud` CLI, read-through cache, and a resumable git importer.',
+        'Workspace of crates: core, server (axum), client + bud CLI, read-through cache, and a resumable git importer.',
       ],
       tech: ['Rust', 'axum', 'SQLite', 'BLAKE3', 'HTTP/JSON'],
       tags: ['Systems', 'Developer tools', 'Open source'],

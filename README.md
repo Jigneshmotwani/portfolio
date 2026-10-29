@@ -88,6 +88,9 @@ Then point the site at it. Either set `assistant.apiUrl` in `content.ts`, or add
 `VITE_ASSISTANT_API_URL` (Settings → Secrets and variables → Actions → Variables), which the deploy
 workflow passes to the build.
 
+The worker defaults to Claude Opus 5.5 at low effort. Set `ANTHROPIC_MODEL` in `api/wrangler.toml` to
+`claude-haiku-5-5` for a much cheaper bot.
+
 Without a proxy, or when it's down, the assistant answers from a keyword search over `content.ts`. It
 never makes things up. Questions it can't answer get: *"I don't have that info — try Mail to ask him
 directly."*
