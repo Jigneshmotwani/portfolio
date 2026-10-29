@@ -1,0 +1,26 @@
+# Ask Jignesh proxy — see README.md for setup.
+name = "ask-jignesh"
+main = "src/index.ts"
+compatibility_date = "2026-10-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+# Comma-separated; `*` wildcards allowed. Add your custom domain if you use one.
+ALLOWED_ORIGINS = "https://jigneshmotwani.github.io,http://localhost:*,http://127.0.0.1:*"
+ANTHROPIC_MODEL = "claude-opus-5-5"
+EFFORT = "low"
+PER_MINUTE_LIMIT = "8"
+PER_DAY_LIMIT = "60"
+DAILY_LIMIT = "1500"
+
+# Cloudflare's built-in per-key rate limiter (keyed by visitor IP).
+[[ratelimits]]
+name = "RATE_LIMITER"
+namespace_id = "1001"
+simple = { limit = 8, period = 60 }
+
+# Optional: makes DAILY_LIMIT exact across all edge locations.
+#   npx wrangler kv namespace create USAGE_KV   → paste the id below
+# [[kv_namespaces]]
+# binding = "USAGE_KV"
+# id = "<your-kv-namespace-id>"
