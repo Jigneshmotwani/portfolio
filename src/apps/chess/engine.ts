@@ -166,7 +166,6 @@ export function squareIndex(name: string): number {
 export const moveFrom = (m: number) => m & 127
 export const moveTo = (m: number) => (m >> 7) & 127
 export const movePromo = (m: number) => (m >> 14) & 7
-const moveFlags = (m: number) => m >> 17
 const encode = (from: number, to: number, promo = 0, flags = 0) => from | (to << 7) | (promo << 14) | (flags << 17)
 
 const STACK = 1024

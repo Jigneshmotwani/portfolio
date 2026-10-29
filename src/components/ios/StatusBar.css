@@ -36,6 +36,7 @@
 .ios-status__left {
   gap: 6px;
   justify-content: center;
+  overflow: hidden;
 }
 
 .ios-status__right {
@@ -58,12 +59,6 @@
   cursor: pointer;
   white-space: nowrap;
   padding: 0 2px;
-}
-
-.ios-status__carrier {
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
 }
 
 .ios-status__resume {

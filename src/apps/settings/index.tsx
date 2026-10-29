@@ -21,7 +21,7 @@ interface Section {
 
 const SECTIONS: Section[] = [
   { id: 'about', label: 'About', color: '#8e8e93', icon: <Info size={13} strokeWidth={2.6} />, keywords: 'about this mac me jignesh version specs resume', pane: AboutPane },
-  { id: 'appearance', label: 'Appearance', iosLabel: 'Display & Brightness', color: '#1c1c1e', icon: <Contrast size={13} strokeWidth={2.6} />, keywords: 'dark light mode theme accent colour color dock brightness', pane: AppearancePane },
+  { id: 'appearance', label: 'Appearance', iosLabel: 'Display & Brightness', color: '#48484a', icon: <Contrast size={13} strokeWidth={2.6} />, keywords: 'dark light mode theme accent colour color dock brightness', pane: AppearancePane },
   { id: 'accessibility', label: 'Accessibility', color: '#0a7aff', icon: <Accessibility size={13} strokeWidth={2.6} />, keywords: 'reduce motion animation', pane: AccessibilityPane },
   { id: 'wallpaper', label: 'Wallpaper', color: '#30b0c7', icon: <Image size={13} strokeWidth={2.6} />, keywords: 'background desktop picture', pane: WallpaperPane },
   { id: 'notifications', label: 'Notifications', color: '#ff3b30', icon: <Bell size={13} strokeWidth={2.6} fill="currentColor" />, keywords: 'do not disturb focus banners dnd', pane: NotificationsPane },
@@ -73,7 +73,7 @@ function MacSettings() {
         </div>
         <nav className="settings-sidebar__list scroll" aria-label="Settings sections">
           {!q && (
-            <button type="button" className={`settings-profile${current === 'about' ? ' is-on' : ''}`} onClick={() => go('about')}>
+            <button type="button" className="settings-profile" onClick={() => go('about')}>
               <img src={asset(content.profile.photo)} alt="" draggable={false} />
               <span>
                 <strong>{content.profile.name}</strong>

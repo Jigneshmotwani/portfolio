@@ -47,7 +47,7 @@ function useBattery() {
  */
 export function StatusBar({ tone, carrier = false }: { tone: 'light' | 'adaptive'; carrier?: boolean }) {
   const now = useNow(60_000)
-  const narrow = useMediaQuery('(max-width: 359px)')
+  const narrow = useMediaQuery('(max-width: 379px)')
   const battery = useBattery()
   const toggleCC = useSystem((s) => s.toggleControlCenter)
   const toggleNC = useSystem((s) => s.toggleNotificationCenter)
@@ -90,9 +90,12 @@ export function StatusBar({ tone, carrier = false }: { tone: 'light' | 'adaptive
       onPointerCancel={onPointerEnd}
     >
       <div className="ios-status__left">
-        <button className="ios-status__time" onClick={guard(() => toggleNC(true))} aria-label="Open Notification Center">
-          {carrier ? <span className="ios-status__carrier">JigneshOS</span> : iosTime(now)}
-        </button>
+        {/* The lock screen shows the big clock, so its status bar skips the time. */}
+        {!carrier && (
+          <button className="ios-status__time" onClick={guard(() => toggleNC(true))} aria-label="Open Notification Center">
+            {iosTime(now)}
+          </button>
+        )}
         <button className="ios-status__resume" onClick={guard(openResume)} aria-label="View resume">
           <DocGlyph />
           <span>{narrow ? 'CV' : 'Resume'}</span>
