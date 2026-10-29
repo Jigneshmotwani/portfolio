@@ -4,7 +4,7 @@
  * chunk lives in /assets, so "../" is the root). This keeps working on a
  * GitHub Pages sub-path, a custom domain, and the /resume/ page alike.
  */
-const ROOT = import.meta.env.DEV ? '/' : new URL('../', import.meta.url).href
+const ROOT = import.meta.env.DEV ? '/' : new URL(/* @vite-ignore */ '../', import.meta.url).href
 
 export function asset(path: string): string {
   if (!path) return path
