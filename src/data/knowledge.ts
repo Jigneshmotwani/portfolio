@@ -93,6 +93,7 @@ export function buildProfileText(c: Content): string {
   out.push('', '## About (his own words)', ...p.summary)
   if (!isPlaceholder(p.openTo)) out.push('', `Open to: ${p.openTo}`)
   out.push('', `Interests: ${p.interests.join(', ')}`)
+  if (p.hobbies.length) out.push(`Outside work: ${p.hobbies.join(', ')}`)
   const langs = realItems(p.languages)
   if (langs.length) out.push(`Spoken languages: ${langs.join(', ')}`)
 
@@ -469,11 +470,13 @@ export interface LocalAnswer {
 const COMPANY_ALIASES: Record<string, RegExp> = {
   keppel: /\bkeppel\b/,
   kiora: /\bkiora\b/,
+  lenor: /\blenor\b/,
   firejet: /\bfire\s?jet\b/,
   pqcee: /\bpqcee\b/,
   sony: /\bsony\b/,
   'sutd-ta': /\b(teaching assistant|\bta\b|tutor(ed|ing)?|teach(es|ing)?|50\.004|algorithms (module|course|class))\b/,
-  'sutd-research': /\b(research(er)?|glove|gesture[- ]to[- ]speech|hand gesture)\b/,
+  'sutd-research': /\b(glove|gesture[- ]to[- ]speech|hand gesture)\b/,
+  'sutd-animal-behaviour': /\b(animal|behaviou?r analysis|pose estimation)\b/,
 }
 
 const PROJECT_ALIASES: Record<string, RegExp> = {
@@ -481,7 +484,17 @@ const PROJECT_ALIASES: Record<string, RegExp> = {
   budwood: /\bbud(wood)?\b|version control|\bvcs\b|monorepo/,
   quantumnft: /quantum\s?nft|kaggle for quantum/,
   'sign-language': /sign[- ]?language|\bsign translator/,
-  chord: /\bchord\b|peer[- ]to[- ]peer|p2p|file[- ]sharing/,
+  chord: /\bchord\b|peer[- ]to[- ]peer|p2p|file[- ]sharing|hardest|most impressive|proudest|best project|favou?rite project/,
+  k2: /\bk2\b|agent platform/,
+  kiora: /\bkiora\b|dialysis|capd/,
+  'emotion-music': /emotion|moodify|\bmusic\b/,
+  emergenai: /emergen|temasek/,
+  'metro-pass-planner': /metro|japan|rail pass|train route/,
+  'zen-pod': /\bzen\b|resting pod|standing pod/,
+  'sia-travel-planner': /travel planner|singapore airlines|\bsia\b/,
+  brewlogi: /brewlogi/,
+  meetup: /\bmeetup\b|ideatesomething/,
+  brainhack: /brainhack|code_?exp/,
   'malloc-melee': /malloc|melee|roguelike|\brpg\b/,
   voluntr: /voluntr|volunteer/,
   sentiment: /sentiment/,
@@ -530,24 +543,38 @@ function displayTech(c: Content, lower: string): string {
 function cloudAnswer(c: Content): string {
   const name = c.profile.firstName
   const certs = c.credentials.filter((cr) => /azure|aws|amazon|google cloud|gcp/i.test(cr.name))
-  const lines: string[] = []
-  const azureSkills = c.skills.flatMap((g) => g.items).filter((i) => /azure/i.test(i) && !/^microsoft azure$/i.test(i))
-  if (azureSkills.length || certs.some((cr) => /azure/i.test(cr.name))) {
-    const cert = certs.find((cr) => /azure/i.test(cr.name))
-    lines.push(`- **Microsoft Azure**${azureSkills.length ? ` (${listJoin(azureSkills)})` : ''}${cert ? `, and he holds the *${cert.name}* certification` : ''}`)
+  const items = c.skills.flatMap((g) => realItems(g.items))
+  // "AWS (Bedrock, Lambda, …)" → "Bedrock, Lambda, …"
+  const detail = (re: RegExp) => {
+    const item = items.find((i) => re.test(i))
+    return item ? (/\(([^)]*)\)/.exec(item)?.[1] ?? '') : ''
   }
+  const lines: string[] = []
   const aws = certs.find((cr) => /aws|amazon/i.test(cr.name))
-  if (aws || c.skills.some((g) => g.items.some((i) => /\baws\b/i.test(i)))) lines.push(`- **AWS**${aws ? `: he's an *${aws.name}*` : ''}`)
+  if (aws || items.some((i) => /\baws\b/i.test(i))) {
+    const services = detail(/^AWS \(/)
+    lines.push(`- **AWS**${services ? ` (${services})` : ''}${aws ? `; he's an *${aws.name}*` : ''}`)
+  }
+  const azure = certs.find((cr) => /azure/i.test(cr.name))
+  if (azure || items.some((i) => /azure/i.test(i))) {
+    const services = detail(/^Microsoft Azure \(/)
+    lines.push(`- **Microsoft Azure**${services ? ` (${services})` : ''}${azure ? `; he holds the *${azure.name}* certification` : ''}`)
+  }
+  if (items.some((i) => /google cloud|\bgcp\b|gemini enterprise|vertex/i.test(i))) {
+    const services = detail(/^Google Cloud \(/)
+    const agents = items.find((i) => /gemini enterprise|vertex/i.test(i))
+    lines.push(`- **Google Cloud**${services ? ` (${services})` : ''}${agents ? `, including ${agents}` : ''}`)
+  }
   const where = (tech: string) => {
     const used = [...c.experience.filter((e) => e.tech.some((t) => t.toLowerCase() === tech)).map((e) => `at ${e.company}`), ...c.projects.filter((p) => p.tech.some((t) => t.toLowerCase() === tech)).map((p) => `for ${p.name}`)]
     return used.length ? ` (${listJoin(used)})` : ''
   }
   for (const t of ['Supabase', 'Firebase']) {
-    if (c.skills.some((g) => g.items.includes(t))) lines.push(`- **${t}**${where(t.toLowerCase())}`)
+    if (items.includes(t)) lines.push(`- **${t}**${where(t.toLowerCase())}`)
   }
-  const ops = c.skills.find((g) => g.id === 'cloud')?.items.filter((i) => /docker|opentelemetry|grafana/i.test(i)) ?? []
-  const tail = ops.length ? `\n\nOn the DevOps side he also uses ${listJoin(ops)}.` : ''
-  return `${name} has worked with these cloud platforms:\n\n${lines.join('\n')}${tail}`
+  const work = c.experience.find((e) => e.end === null && /aws/i.test(e.summary) && /azure/i.test(e.summary))
+  const atWork = work ? `\n\nAt ${work.company} he works with enterprise clients across ${/gcp|google/i.test(work.summary) ? 'AWS, Azure and GCP' : 'AWS and Azure'}.` : ''
+  return `${name} has worked with these cloud platforms:\n\n${lines.join('\n')}${atWork}`
 }
 
 function experienceOverview(c: Content): string {
@@ -599,7 +626,7 @@ export function answerLocally(question: string, c: Content, previousQuestion?: s
     return { text: `I'm ${c.assistant.name}, a small assistant that answers questions about ${name} using only what's on this site: his experience, projects, skills, education and how to reach him. For anything else, use Mail to ask him directly.`, source: 'self' }
 
   // Personal / sensitive topics the profile never covers.
-  if (/\b(salary|pay|compensation|how old|age|birthday|born|married|girlfriend|boyfriend|wife|religio|politic|nationality|citizen|visa|address|where does he live exactly)\b/.test(q))
+  if (/\b(salary|pay|paid|earn|earns|earning|income|compensation|how old|age|birthday|born|married|girlfriend|boyfriend|wife|religio|politic|nationality|citizen|visa|address|where does he live exactly)\b/.test(q))
     return { text: unknown, source: 'unknown' }
 
   // Prompt-injection / unrelated tasks.
@@ -626,6 +653,9 @@ export function answerLocally(question: string, c: Content, previousQuestion?: s
       if (p) return { text: projectAnswer(p), source: `project:${id}` }
     }
   }
+
+  if (/\b(hobb(y|ies)|free time|spare time|for fun|outside (of )?work|sports?|weekends?)\b/.test(q) && c.profile.hobbies.length)
+    return { text: `Outside work ${name} enjoys ${listJoin(c.profile.hobbies.map((h) => h.toLowerCase()))}.`, source: 'hobbies' }
 
   if (/\b(cloud|azure|aws|amazon web services|gcp|google cloud|supabase|firebase|serverless|devops)\b/.test(q)) {
     let text = cloudAnswer(c)

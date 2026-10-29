@@ -20,7 +20,7 @@ describe('buildProfileText', () => {
   })
 
   it('lists unknowns explicitly', () => {
-    expect(listUnknowns(content).some((u) => u.includes('Keppel'))).toBe(true)
+    expect(listUnknowns(content).some((u) => /languages/i.test(u))).toBe(true)
     expect(text).toContain('Not covered by this profile')
   })
 
@@ -36,13 +36,17 @@ describe('answerLocally', () => {
     expect(a).toMatch(/AWS/)
   })
 
-  it('handles Keppel honestly', () => {
+  it('answers what he built at Keppel', () => {
     const a = ask('What did he build at Keppel?')
     expect(a).toMatch(/AI Engineer/)
     expect(a).toMatch(/Keppel Technology Solutions/)
     expect(a).toMatch(/Jan 2026/)
-    expect(a).toMatch(/doesn't list specifics/)
-    expect(a.trim().endsWith(unknown)).toBe(true)
+    expect(a).toMatch(/K2/)
+    expect(a).not.toContain(unknown)
+  })
+
+  it('names Google Cloud among the cloud platforms', () => {
+    expect(ask('Has he used GCP?')).toMatch(/Google Cloud|Gemini/)
   })
 
   it('refuses off-topic questions', () => {

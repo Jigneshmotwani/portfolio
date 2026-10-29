@@ -28,7 +28,10 @@ in [`src/data/types.ts`](src/data/types.ts) document every field.
 - Strings starting with `TODO:` are placeholders for missing info. They show with a dashed outline until you
   set `site.showPlaceholders: false`. See [ASSUMPTIONS.md](ASSUMPTIONS.md) for what is still missing.
 - Images go in `public/` and are referenced by relative path (e.g. `photos/profile.jpg`).
-- After changing experience/education, regenerate the resume PDF with `npm run resume:pdf`.
+- The one-page resume (Resume button, `/resume/`, Preview) is the `resume` block at the end of
+  `content.ts`. It mirrors `public/resume.pdf`, which is your own PDF. When you update your resume, replace
+  that file and edit the `resume` block to match. `npm run resume:pdf` can instead generate the PDF from the
+  HTML version, but it overwrites `public/resume.pdf`.
 - Refresh the GitHub app's offline fallback with `npm run cache:github`.
 
 ## Develop

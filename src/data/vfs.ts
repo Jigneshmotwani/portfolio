@@ -227,7 +227,7 @@ function build(): VfsNode {
     file(dir, 'Jignesh_Motwani_Resume.pdf', 'Jignesh_Motwani_Resume.pdf', 'pdf', 'PDF Document', {
       ref: { type: 'resume-pdf' },
       modified: SITE_DATE,
-      size: '140 KB',
+      size: '31 KB',
     }),
     file(dir, 'Resume.webloc', 'Resume (web)', 'link', 'Web Location', {
       ref: { type: 'resume-web' },

@@ -30,6 +30,8 @@ export interface Profile {
   /** What kind of opportunities you are open to. */
   openTo: string
   interests: string[]
+  /** Life outside work (shown in Notes and answered by the assistant). */
+  hobbies: string[]
   languages: string[]
 }
 
@@ -200,6 +202,28 @@ export interface SiteConfig {
   welcomeMessage: { title: string; body: string; subject: string }
 }
 
+/** One entry on the one-page resume: an id from experience / projects / education plus its exact bullets. */
+export interface ResumeEntry {
+  id: string
+  /** Heading override (defaults to the entry's own name / role). */
+  title?: string
+  /** Bullets as printed; wrap words in **double asterisks** to bold them. */
+  bullets: string[]
+}
+
+/**
+ * The one-page resume (overlay, /resume page, Preview). It mirrors the PDF in
+ * public/resume.pdf, so keep the two in step when you edit either.
+ */
+export interface ResumeConfig {
+  education: ResumeEntry[]
+  skills: { label: string; items: string }[]
+  experience: ResumeEntry[]
+  projects: ResumeEntry[]
+  /** Credential ids, in order. */
+  certifications: string[]
+}
+
 export interface Content {
   site: SiteConfig
   profile: Profile
@@ -216,4 +240,5 @@ export interface Content {
   bookmarks: Bookmark[]
   music: Track[]
   assistant: AssistantConfig
+  resume: ResumeConfig
 }

@@ -56,67 +56,91 @@ export function Dock() {
     return () => window.clearTimeout(t)
   }, [running, reduced])
 
-  const update = useCallback(() => {
+  // Magnification is eased frame by frame, like the real Dock: icons follow the
+  // cursor quickly while it moves, then settle back down slowly when it leaves.
+  const current = useRef<number[]>(SLOTS.map(() => 1))
+  const shift = useRef(0)
+  const lastFrame = useRef(0)
+
+  const tick = useCallback((now: number) => {
     raf.current = 0
+    const dt = lastFrame.current ? Math.min(48, now - lastFrame.current) : 16
+    lastFrame.current = now
     const mx = mouseX.current
     const widths = SLOTS.map(slotWidth)
     const baseTotal = widths.reduce((a, b) => a + b, 0) + GAP * (SLOTS.length - 1) + PAD * 2
     const baseLeft = (window.innerWidth - baseTotal) / 2
-    // Scale every slot from its distance to the cursor in the *unmagnified* layout.
+    // Target scale for every slot from its distance to the cursor in the *unmagnified* layout.
     let left = PAD
-    const scales = SLOTS.map((slot, i) => {
+    const targets = SLOTS.map((slot, i) => {
       const center = baseLeft + left + widths[i] / 2
       left += widths[i] + GAP
       if (mx == null || slot.kind === 'sep') return 1
       const d = Math.abs(mx - center)
       return d < RANGE ? 1 + (MAX - 1) * ((Math.cos((Math.PI * d) / RANGE) + 1) / 2) : 1
     })
+    // Exponential easing toward the targets: ~45ms time constant while tracking, ~110ms on the way out.
+    const k = 1 - Math.exp(-dt / (mx == null ? 110 : 45))
+    let settling = false
+    const scales = current.current.map((s, i) => {
+      const next = s + (targets[i] - s) * k
+      if (Math.abs(targets[i] - next) < 0.002) return targets[i]
+      settling = true
+      return next
+    })
+    current.current = scales
     SLOTS.forEach((slot, i) => {
       const el = itemRefs.current[i]
-      if (el && slot.kind !== 'sep') el.style.setProperty('--s', scales[i].toFixed(3))
+      if (el && slot.kind !== 'sep') el.style.setProperty('--s', scales[i].toFixed(4))
     })
-    // Shift the (centred) dock so the point under the cursor stays under the cursor.
-    let shift = 0
     if (mx != null) {
+      // Shift the (centred) dock so the point under the cursor stays under the cursor.
       const u = mx - baseLeft
       let b = PAD
       let n = PAD
       let mapped = u
       for (let i = 0; i < SLOTS.length; i++) {
         const w = widths[i]
-        const nw = w * scales[i]
         if (u < b + w || i === SLOTS.length - 1) {
           mapped = u < b ? n - (b - u) : n + Math.min(u - b, w) * scales[i]
           break
         }
         b += w + GAP
-        n += nw + GAP
+        n += w * scales[i] + GAP
       }
       const newTotal = widths.reduce((acc, w, i) => acc + w * scales[i], 0) + GAP * (SLOTS.length - 1) + PAD * 2
-      shift = mx - ((window.innerWidth - newTotal) / 2 + mapped)
+      shift.current = mx - ((window.innerWidth - newTotal) / 2 + mapped)
+    } else {
+      shift.current = Math.abs(shift.current) < 0.1 ? 0 : shift.current * (1 - k)
+      if (shift.current !== 0) settling = true
     }
-    dockRef.current?.style.setProperty('--shift', `${shift.toFixed(1)}px`)
+    dockRef.current?.style.setProperty('--shift', `${shift.current.toFixed(2)}px`)
+    if (settling) raf.current = requestAnimationFrame(tick)
+    else lastFrame.current = 0
   }, [])
+
+  const kick = () => {
+    if (!raf.current) raf.current = requestAnimationFrame(tick)
+  }
 
   const onMove = (e: ReactPointerEvent) => {
     if (!magnify || e.pointerType !== 'mouse') return
     mouseX.current = e.clientX
     if (!tracking) setTracking(true)
-    if (!raf.current) raf.current = requestAnimationFrame(update)
+    kick()
   }
 
   const onLeave = () => {
     mouseX.current = null
     setTracking(false)
-    if (raf.current) cancelAnimationFrame(raf.current)
-    raf.current = 0
-    update()
+    kick()
   }
 
   useEffect(() => {
     if (!magnify) onLeave()
     return () => {
       if (raf.current) cancelAnimationFrame(raf.current)
+      raf.current = 0
     }
   }, [magnify])
 
@@ -157,7 +181,7 @@ export function Dock() {
 
   return (
     <>
-      <nav ref={dockRef} className={`dock${tracking ? ' dock--tracking' : ''}`} aria-label="Dock" onPointerMove={onMove} onPointerLeave={onLeave}>
+      <nav ref={dockRef} className={`dock${magnify ? ' dock--magnify' : ''}${tracking ? ' dock--tracking' : ''}`} aria-label="Dock" onPointerMove={onMove} onPointerLeave={onLeave}>
         <div className="dock__shelf" />
         <div className="dock__row">
           {SLOTS.map((slot, i) => {

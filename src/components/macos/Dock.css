@@ -56,8 +56,9 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-.dock--tracking,
-.dock--tracking .dock__item {
+/* With magnification on, size and shift are eased in JS every frame. */
+.dock--magnify,
+.dock--magnify .dock__item {
   transition: none;
 }
 
