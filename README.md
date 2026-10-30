@@ -3,8 +3,8 @@
 My portfolio as a small operating system you can actually use. Laptops and desktops get a macOS-style
 desktop, and phones get an iOS-style home screen. The switch happens at 768px viewport width.
 
-- **Live site:** https://jigneshmotwani.github.io/portfolio/
-- **Plain resume (for recruiters):** https://jigneshmotwani.github.io/portfolio/resume/
+- **Live site:** https://jigneshmotwani.vercel.app/
+- **Plain resume (for recruiters):** https://jigneshmotwani.vercel.app/resume/
 
 ## What's inside
 
@@ -57,51 +57,52 @@ npm run build     # type-check + production build into dist/
 npm run preview   # serve the production build locally
 ```
 
-## Deploy the site to GitHub Pages
+## Deploy to Vercel
 
-The build uses relative URLs, so it works at `/portfolio/`, at a custom domain, or under any sub-path
-with no config changes.
+The site and the "Ask Jignesh" API deploy together as one Vercel project: the Vite build is the static
+site, and [`api/chat.ts`](api/chat.ts) becomes the function at `/api/chat`.
 
-1. Push to `main`.
-2. In the repo, go to **Settings → Pages → Build and deployment → Source** and choose **GitHub Actions**.
-3. The workflow in [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) runs the tests, builds,
-   and publishes `dist/`. The site appears at `https://<user>.github.io/<repo>/`.
-4. Update `site.url` in `content.ts` if the URL differs; it's used for the resume share link and social
-   previews.
+1. Go to [vercel.com/new](https://vercel.com/new) and import the `Jigneshmotwani/portfolio` GitHub repo.
+2. Set **Project Name** to `jigneshmotwani`, which gives the URL `https://jigneshmotwani.vercel.app`.
+   Vercel reads `vercel.json`, so leave the framework (Vite), build command and output directory as detected.
+3. Under **Environment Variables**, add `AIAND_API_KEY` with your key from
+   [console.aiand.com](https://console.aiand.com/).
+4. Click **Deploy**. Every push to the production branch redeploys; other branches get preview URLs.
 
-## Deploy the "Ask Jignesh" AI proxy
+To check the API after a deploy, open `https://jigneshmotwani.vercel.app/api/chat`. It should show
+`"configured": true`.
 
-The assistant calls an LLM through a small Cloudflare Worker in [`api/`](api), so the API key never
-reaches the browser. The worker builds its system prompt from the same `content.ts`, limits answers to
-that data, and rate-limits each visitor. Full steps are in [`api/README.md`](api/README.md):
+If you deploy under a different URL, update `site.url` in `content.ts`; it's used for the resume share
+link and social previews.
 
-```bash
-cd api && npm install
-```
+## Ask Jignesh (AI chat)
 
-```bash
-npx wrangler secret put ANTHROPIC_API_KEY
-```
+The chat calls [ai&](https://console.aiand.com/) through the Vercel function, so the API key never reaches
+the browser. The function builds its system prompt from `content.ts`, answers only from that data,
+validates input, and rate-limits each visitor. The code is in [`server/chatProxy.ts`](server/chatProxy.ts).
 
-```bash
-npx wrangler deploy
-```
+| Variable | Default | What it does |
+|---|---|---|
+| `AIAND_API_KEY` | (required) | Your ai& API key. |
+| `AIAND_MODEL` | `google/gemma-4-31b-it` | Any model id from `https://api.aiand.com/v1/models`. |
+| `AIAND_REASONING_EFFORT` | model default | For reasoning models, e.g. `none` or `low` for faster answers. |
+| `ALLOWED_ORIGINS` | same origin only | Extra sites allowed to call the API, comma-separated, `*` wildcards (e.g. `https://*.vercel.app`). |
+| `PER_MINUTE_LIMIT` / `PER_DAY_LIMIT` | `8` / `60` | Questions per visitor (IP) per minute / per day. |
+| `DAILY_LIMIT` | `1500` | Questions per day across all visitors (`0` = unlimited). |
+| `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` | unset | Optional. Shares the limits across all function instances. Add Upstash from the Vercel Marketplace and it sets these (or `KV_REST_API_URL` / `KV_REST_API_TOKEN`, which also work). Without them, limits are kept per instance. |
 
-Then point the site at it. Either set `assistant.apiUrl` in `content.ts`, or add a repository variable
-`VITE_ASSISTANT_API_URL` (Settings → Secrets and variables → Actions → Variables), which the deploy
-workflow passes to the build.
+Without a working API (no key, an outage, or a static host with no `/api`), the assistant answers from a
+keyword search over `content.ts`. It never makes things up. Questions it can't answer get: *"I don't have
+that info — try Mail to ask him directly."*
 
-The worker defaults to Claude Opus 5.5 at low effort. Set `ANTHROPIC_MODEL` in `api/wrangler.toml` to
-`claude-haiku-5-5` for a much cheaper bot.
-
-Without a proxy, or when it's down, the assistant answers from a keyword search over `content.ts`. It
-never makes things up. Questions it can't answer get: *"I don't have that info — try Mail to ask him
-directly."*
+The function speaks the OpenAI Chat Completions format, so another compatible provider works by setting
+`AIAND_BASE_URL` (default `https://api.aiand.com/v1`).
 
 ## Project structure
 
 ```
-api/              Cloudflare Worker: LLM proxy with CORS, validation and rate limiting
+api/              Vercel Function entry: /api/chat
+server/           Chat proxy: ai& streaming, validation, CORS, rate limiting (+ tests)
 public/           Static files: wallpapers, profile photo, resume.pdf, icons
 scripts/          resume PDF generator, GitHub cache refresher
 src/

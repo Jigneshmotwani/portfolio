@@ -21,7 +21,7 @@ export const content: Content = {
     title: 'Jignesh Motwani',
     description:
       'Jignesh Motwani is an AI engineer in Singapore building RAG and multi-agent systems. Explore his portfolio as an interactive macOS and iOS desktop.',
-    url: 'https://jigneshmotwani.github.io/portfolio/',
+    url: 'https://jigneshmotwani.vercel.app/',
     resumePdf: 'resume.pdf',
     showPlaceholders: true,
     welcomeNotificationDelay: 20,
@@ -60,9 +60,8 @@ export const content: Content = {
     linkedin: 'https://www.linkedin.com/in/jigneshmotwani/',
     github: 'https://github.com/Jigneshmotwani',
     githubUsername: 'Jigneshmotwani',
-    website: 'https://jigneshmotwani.github.io/portfolio/',
-    // Your resume PDF lists your mobile number; it stays off the site itself unless you add it here.
-    phone: '',
+    website: 'https://jigneshmotwani.vercel.app/',
+    phone: '+65 9297 5323',
     formEndpoint: '',
   },
 
@@ -611,7 +610,7 @@ export const content: Content = {
         '"Ask Jignesh" assistant behind a rate-limited serverless proxy, with an offline keyword-search fallback.',
         'Everything is driven by one content file.',
       ],
-      tech: ['React', 'TypeScript', 'Vite', 'Zustand', 'Cloudflare Workers'],
+      tech: ['React', 'TypeScript', 'Vite', 'Zustand', 'Vercel Functions', 'ai&'],
       tags: ['Web', 'Fun'],
       year: '2026',
       context: 'Side project',
@@ -729,7 +728,7 @@ export const content: Content = {
       name: 'Microsoft Certified: Azure AI Apps and Agents Developer Associate',
       issuer: 'Microsoft',
       kind: 'Certification',
-      date: 'TODO: month/year earned',
+      date: '2026-08',
       url: 'https://learn.microsoft.com/en-us/users/jigneshmotwani/credentials/1b9df31636335d00',
     },
     {
@@ -922,7 +921,7 @@ Joined **Keppel Technology Solutions** as an **AI Engineer**: leading **K2** and
 - **Work:** AI Engineer at Keppel Technology Solutions, leading K2 and co-developing an AIOps platform
 - **Building:** Budwood, a Rust VCS for huge monorepos
 - **Recently:** ROSS, a permission-aware knowledge and agent platform (Tencent Hackathon 2026)
-- **Certified:** AWS Certified Generative AI Developer – Professional (Oct 2026); Microsoft Azure AI Apps and Agents Developer Associate`,
+- **Certified:** AWS Certified Generative AI Developer – Professional (Oct 2026); Microsoft Azure AI Apps and Agents Developer Associate (Aug 2026)`,
     },
     {
       id: 'this-site',
@@ -934,7 +933,7 @@ This portfolio is a small operating system written in **React + TypeScript** and
 
 - Laptops get a macOS-style desktop, phones get an iOS-style home screen
 - All content comes from one file: \`src/data/content.ts\`
-- "Ask Jignesh" streams answers from an LLM through a rate-limited Cloudflare Worker, and falls back to keyword search when offline
+- "Ask Jignesh" streams answers from an LLM through a rate-limited Vercel Function (ai&), and falls back to keyword search when offline
 - Games: Tetris and Chess (alpha-beta search in a Web Worker)
 
 Source: [github.com/Jigneshmotwani/portfolio](https://github.com/Jigneshmotwani/portfolio)`,
@@ -1012,7 +1011,8 @@ Source: [github.com/Jigneshmotwani/portfolio](https://github.com/Jigneshmotwani/
       'Which certifications does he have?',
     ],
     unknownAnswer: "I don't have that info — try Mail to ask him directly.",
-    apiUrl: '',
+    // The Vercel function in api/chat.ts, relative to the site root. VITE_ASSISTANT_API_URL overrides it.
+    apiUrl: 'api',
   },
 
   // The one-page resume. Mirrors public/resume.pdf (your own PDF); keep the two in step.

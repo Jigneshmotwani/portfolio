@@ -19,3 +19,4 @@ npm-debug.log*
 # Cloudflare Worker
 api/.wrangler
 api/.dev.vars
+.vercel

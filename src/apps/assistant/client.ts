@@ -1,5 +1,6 @@
 import { content } from '../../data/content'
 import { answerLocally } from '../../data/knowledge'
+import { asset } from '../../lib/assets'
 
 export type ChatRole = 'user' | 'assistant'
 
@@ -20,8 +21,9 @@ const FIRST_BYTE_TIMEOUT = 8000
 const MAX_TURNS = 12
 const MAX_CHARS = 1000
 
-/** URL of the deployed proxy (see /api). Empty = offline-only mode. */
-export const apiUrl = ((import.meta.env.VITE_ASSISTANT_API_URL as string | undefined) || content.assistant.apiUrl || '').replace(/\/+$/, '')
+/** URL of the proxy (api/chat.ts on Vercel), resolved against the site root. Empty = offline-only mode. */
+const configuredApi = (import.meta.env.VITE_ASSISTANT_API_URL as string | undefined) || content.assistant.apiUrl || ''
+export const apiUrl = configuredApi ? asset(configuredApi).replace(/\/+$/, '') : ''
 
 const sleep = (ms: number, signal: AbortSignal) =>
   new Promise<void>((resolve, reject) => {
@@ -73,6 +75,8 @@ async function* streamLive(history: ChatTurn[], signal: AbortSignal): AsyncGener
       throw new FallbackError('network')
     }
     if (!res.ok || !res.body) throw new FallbackError(res.status === 429 ? 'rate-limited' : `http-${res.status}`)
+    // Static hosts without the proxy may answer with an HTML page; only an event stream is the live assistant.
+    if (!res.headers.get('content-type')?.includes('text/event-stream')) throw new FallbackError('not-a-stream')
 
     const reader = res.body.pipeThrough(new TextDecoderStream()).getReader()
     let buffer = ''

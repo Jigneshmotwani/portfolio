@@ -26,16 +26,12 @@ made. Fix anything here in `src/data/content.ts` (all content lives there) and r
 These strings start with `TODO:` in `content.ts`. While `site.showPlaceholders` is `true` they show with a
 dashed yellow outline. Set it to `false` to hide them. The resume and the AI assistant always ignore them.
 
-- **Azure AI Apps and Agents Developer Associate**: month and year earned.
 - **Baby Shark Fund Award**: year.
 - **profile.openTo**: what kinds of roles or conversations you're open to.
 - **profile.languages**: languages you speak besides English.
 
 ## Judgement calls
 
-- **Phone number**: your resume PDF lists your mobile, and the PDF is the download, so it is public there.
-  The site itself (Contacts, the HTML resume, the assistant) leaves it out because `contact.phone` is empty.
-  Add it there if you want it everywhere.
 - **Kiora Care** is shown as a project (KIORA), as in your master resume, not as a job. Its context line
   keeps the LinkedIn title and dates (Backend and Infra Engineer, Sep–Dec 2025).
 - **Hand-gesture glove research** (Aug–Dec 2023) comes from LinkedIn; the master resume doesn't list it.
@@ -58,8 +54,8 @@ dashed yellow outline. Set it to `false` to hide them. The resume and the AI ass
 - **Breakpoint**: below 768px wide you get iOS, at 768px and above you get macOS, so iPads get macOS.
 - **Boot / lock screens** show once per browser session. Reloading in the same tab goes straight to the
   desktop or home screen. Add `?skipboot` to any URL to skip them.
-- **AI model and costs**: the proxy defaults to Claude Opus 5.5 at low effort, with short answers and
-  per-visitor rate limiting. For a cheaper public bot set `ANTHROPIC_MODEL = "claude-haiku-5-5"` in
-  `api/wrangler.toml`. See `api/README.md`.
+- **AI model and costs**: the chat uses ai& with `google/gemma-4-31b-it` by default ($0.20 / $0.50 per million
+  input / output tokens, no reasoning delay), short answers and per-visitor rate limits. Change `AIAND_MODEL`
+  in Vercel to use another model from `https://api.aiand.com/v1/models`.
 - **Chess and Tetris share one Dynamic Island slot**: if both games run at once, the island shows whichever
   updated last.

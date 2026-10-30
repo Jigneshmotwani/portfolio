@@ -182,7 +182,8 @@ export interface AssistantConfig {
   /** Exact reply when the answer isn't in this file. */
   unknownAnswer: string
   /**
-   * URL of the deployed AI proxy (see /api). Leave empty to use only the
+   * Base URL of the AI proxy (the Vercel function in api/chat.ts is "api").
+   * Relative paths resolve against the site root. Leave empty to use only the
    * offline keyword-search mode. VITE_ASSISTANT_API_URL overrides this.
    */
   apiUrl: string
